@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#298a93</color>
+    <color name="colorPrimaryDark">#005662</color>
+    <color name="colorAccent">#4fb3bf</color>
+    <color name="colorBackGround">#312d2d</color>
+    <color name="colorBackGroundCard">#201d1d</color>
+    <color name="colorWhite">#ffffff</color>
+    <color name="colorSemiWhite">#c9c7c7</color>
+    <color name="colorButton">#262222</color>
+    <color name="colorContainer">#262222</color>
+    <color name="colorRed">#005662</color>
+
+</resources>

@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "796710129992",
+    "firebase_url": "https://easterncourierandroidmobileapp.firebaseio.com",
+    "project_id": "easterncourierandroidmobileapp",
+    "storage_bucket": "easterncourierandroidmobileapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:796710129992:android:098dd7a1685c6632",
+        "android_client_info": {
+          "package_name": "com.example.easterncourier.easterncourier"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "796710129992-ngl438maoaidb8gg660vgt3f5e4d9kil.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.easterncourier.easterncourier",
+            "certificate_hash": "90969234636be985b7da0c1d78c40c9cbc7989e3"
+          }
+        },
+        {
+          "client_id": "796710129992-00j2ocau6enbvut9o28runnquj89k9f8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1R4rv-TRFmExMeaZ-18_Z-lGPgNR-EIY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "796710129992-00j2ocau6enbvut9o28runnquj89k9f8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

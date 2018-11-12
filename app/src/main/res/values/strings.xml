@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">EasternCourier</string>
+
+    <string name="title_activity_current_route">Map</string>
+    <string name="title_activity_admin_dashboard">admin_dashboard</string>
+    <string name="title_activity_client_request_map_location">Map</string>
+    <string name="title_activity_sender_map_location_prototype">Map</string>
+    <string name="title_activity_courier_location">Map</string>
+    <string name="title_activity_choose_dropping_point_location">Map</string>
+    <string name="title_activity_receiver_location">Map</string>
+    <string name="title_activity_courier_show_my_location">Map</string>
+    <string name="title_activity_courier_show_my_location_sample">Map</string>
+</resources>

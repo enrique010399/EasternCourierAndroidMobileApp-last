@@ -44,9 +44,7 @@ public class admin_requests extends AppCompatActivity implements Adapter_admin_r
         recyclerView=(RecyclerView) findViewById(R.id.rv_listRequests);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-
         list = new ArrayList<admin_request_item>();
-
         reference=FirebaseDatabase.getInstance().getReference().child("Client Request");
         reference.addValueEventListener(new ValueEventListener() {
             @Override

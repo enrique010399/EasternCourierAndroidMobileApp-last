@@ -12,7 +12,7 @@
     <string name="title_activity_courier_show_my_location_sample">Map</string>
 
     <string-array name="accountType">
-        <item>Courier</item>
         <item>Client</item>
+        <item>Courier</item>
     </string-array>
 </resources>

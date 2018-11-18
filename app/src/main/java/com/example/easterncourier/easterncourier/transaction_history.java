@@ -44,36 +44,52 @@ public class transaction_history extends AppCompatActivity implements Adapter_ad
 
 
 
-        searchNameEt.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (!s.toString().isEmpty()){
-                    searchClient(s.toString());
-                }
-                else {
-                    searchClient("");
-                }
-            }
-        });
         if (accountTypeSpinner.getSelectedItem().equals("Courier")){
+            searchNameEt.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+                }
 
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
 
+                }
 
+                @Override
+                public void afterTextChanged(Editable s) {
+                    if (!s.toString().isEmpty()){
+                        searchCourier(s.toString());
+                    }
+                    else {
+                        searchCourier("");
+                    }
+                }
+            });
         }
-        else{
+        if(accountTypeSpinner.getSelectedItem().equals("Client")){
+            searchNameEt.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+                }
 
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    if (!s.toString().isEmpty()){
+                        searchClient(s.toString());
+                    }
+                    else {
+                        searchClient("");
+                    }
+                }
+            });
         }
 
     }
@@ -81,6 +97,40 @@ public class transaction_history extends AppCompatActivity implements Adapter_ad
     private void searchClient(String s) {
         databaseReference= FirebaseDatabase.getInstance().getReference().child("Client Request");
         Query query=databaseReference.orderByChild("clientFullName")
+                .startAt(s)
+                .endAt(s + "\uf8ff");
+
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.hasChildren()){
+                    //arrayList.clear();
+                    list.clear();
+                    for (DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
+                        final admin_request_item admin_request_item=dataSnapshot1.getValue(admin_request_item.class);
+                        list.add(admin_request_item);
+                    }
+
+                    adapter_admin_transaction_history=new Adapter_admin_transaction_history(transaction_history.this,list);
+                    recyclerView.setAdapter(adapter_admin_transaction_history);
+                    adapter_admin_transaction_history.notifyDataSetChanged();
+
+
+                    //adapter_admin_transaction_history.setOnItemClickListener(transaction_history.this);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void searchCourier(String s){
+        databaseReference= FirebaseDatabase.getInstance().getReference().child("Client Request");
+        Query query=databaseReference.orderByChild("requestAssignedCourierFullName")
                 .startAt(s)
                 .endAt(s + "\uf8ff");
 

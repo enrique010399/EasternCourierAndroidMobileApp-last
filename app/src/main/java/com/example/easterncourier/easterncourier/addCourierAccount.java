@@ -4,14 +4,16 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.firebase.geofire.GeoFire;
@@ -19,6 +21,8 @@ import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -35,6 +39,8 @@ public class addCourierAccount extends AppCompatActivity {
     private Uri mImageUri;
     private StorageReference mStorageRef;
     DatabaseReference databaseCourierAccount,databaseCourierAccountLocation;
+    private ProgressBar progressBar;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,11 +50,11 @@ public class addCourierAccount extends AppCompatActivity {
         databaseCourierAccount = FirebaseDatabase.getInstance().getReference("Courier Accounts");
         databaseCourierAccountLocation=FirebaseDatabase.getInstance().getReference("Courier Accounts Location");
         mStorageRef= FirebaseStorage.getInstance().getReference("Courier Accounts");
-
+        mAuth = FirebaseAuth.getInstance();
         courierFirstName=findViewById(R.id.firstNameEditText);
         courierLastName=findViewById(R.id.lastNameEditText);
-        courierAddress=findViewById(R.id.courierAddress);
-        courierPhoneNumber=findViewById(R.id.courierPhoneNumber);
+        courierAddress=findViewById(R.id.streetEditText);
+        courierPhoneNumber=findViewById(R.id.phoneNumberEditText);
         courierUserName=findViewById(R.id.courierUserName);
         courierPassword=findViewById(R.id.courierPassword);
 
@@ -75,7 +81,9 @@ public class addCourierAccount extends AppCompatActivity {
         courierSubmitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!TextUtils.isEmpty(courierFirstName.getText().toString()) &&
+
+                registerUser();
+                /*if (!TextUtils.isEmpty(courierFirstName.getText().toString()) &&
                         !TextUtils.isEmpty(courierLastName.getText().toString()) &&
                         !TextUtils.isEmpty(courierAddress.getText().toString()) &&
                         !TextUtils.isEmpty(courierPhoneNumber.getText().toString())){
@@ -91,10 +99,139 @@ public class addCourierAccount extends AppCompatActivity {
                     geoFire.setLocation(id,new GeoLocation(0.00,0.00));
                     Toast.makeText(addCourierAccount.this,"New Courier Account Added",Toast.LENGTH_LONG).show();
 
-                }
+                }*/
             }
         });
 
+    }
+
+
+
+    private void registerUser() {
+        //progressBar.setVisibility(View.VISIBLE);
+        final String firstName = courierFirstName.getText().toString().trim(), lastName=courierLastName.getText().toString().trim()
+                ,password=courierPassword.getText().toString().trim(),phone=courierPhoneNumber.getText().toString().trim();
+        final String email = courierUserName.getText().toString().trim();
+        //String password = courierPassword.getText().toString().trim();
+
+
+
+
+
+
+        if (firstName.isEmpty()) {
+            courierFirstName.setError("This Field is required!!");
+            courierFirstName.requestFocus();
+            return;
+        }
+
+        if (lastName.isEmpty()) {
+            courierLastName.setError("This Field is required!!");
+            courierLastName.requestFocus();
+            return;
+        }
+
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            courierUserName.setError("Invalid Email!!!");
+            courierUserName.requestFocus();
+            return;
+        }
+
+        if (password.isEmpty()) {
+            courierPassword.setError("This field is required!!");
+            courierPassword.requestFocus();
+            return;
+        }
+
+        if (password.length() < 6) {
+            courierPassword.setError("Please Enter more than 6 character for password!!!");
+            courierPassword.requestFocus();
+            return;
+        }
+
+        if (phone.isEmpty()) {
+            courierPhoneNumber.setError("This field is required!!");
+            courierPhoneNumber.requestFocus();
+            return;
+        }
+
+        if (phone.length() != 10) {
+            courierPhoneNumber.setError("Invalid Phone Number!!");
+            courierPhoneNumber.requestFocus();
+            return;
+        }
+
+        //progressBar.setVisibility(View.VISIBLE);
+        mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                //progressBar.setVisibility(View.GONE);
+
+                if (task.isSuccessful()){
+                    uploadFile();
+                    final addCourierAccountItem addCourierAccountItem=new addCourierAccountItem(
+                            mAuth.getCurrentUser().getUid(),
+                            firstName,
+                            lastName,
+                            courierAddress.getText().toString(),
+                            courierBirthDate.getText().toString(),
+                            courierPhoneNumber.getText().toString(),
+                            " ",
+                            " ",
+                            " ",
+                            mImageUri+" ",
+                            courierUserName.getText().toString(),
+                            courierPassword.getText().toString()
+
+                    );
+
+                    FirebaseDatabase.getInstance().getReference("Courier Accounts")
+                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                            .setValue(addCourierAccountItem)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    //progressBar.setVisibility(View.GONE);
+                                    if (task.isSuccessful()){
+
+
+                                        GeoFire geoFire= new GeoFire(databaseCourierAccountLocation);
+                                        geoFire.setLocation(FirebaseAuth.getInstance().getCurrentUser().getUid(),new GeoLocation(0.00,0.00));
+                                        Toast.makeText(addCourierAccount.this,"New Courier Account Added",Toast.LENGTH_LONG).show();
+                                        AlertDialog.Builder builder=new AlertDialog.Builder(addCourierAccount.this);
+                                        builder.setMessage("Registered Successfully!!!")
+                                                .create().show();
+                                        //Intent intent=new Intent(register_client_account.this,SignIn.class);
+                                        //startActivity(intent);
+                                    }
+                                    else{
+                                        Toast.makeText(addCourierAccount.this,"SignUp Failed!!!",Toast.LENGTH_LONG);
+                                    }
+                                }
+                            });
+
+
+
+                }
+                else {
+                    //Toast.makeText(register_client_account.this,task.getException().getMessage(),Toast.LENGTH_LONG);
+                    AlertDialog.Builder builder=new AlertDialog.Builder(addCourierAccount.this);
+                    builder.setMessage(task.getException().getMessage()).setNegativeButton("Retry",null)
+                            .create().show();
+                }
+
+            }
+        });
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        /*if (mAuth.getCurrentUser() != null) {
+            //handle the already login user
+        }*/
     }
 
     private String getFilextension(Uri uri){

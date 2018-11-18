@@ -58,9 +58,7 @@ public class admin_requests extends AppCompatActivity implements Adapter_admin_r
                     if (!admin_request_item1.getRequestFinish().equals("Finished")){
                         list.add(admin_request_item1);
                     }
-
                 }
-
                 adapter_admin_requests=new Adapter_admin_requests(admin_requests.this,list);
                 recyclerView.setAdapter(adapter_admin_requests);
                 adapter_admin_requests.setOnItemClickListener(admin_requests.this);
@@ -68,9 +66,7 @@ public class admin_requests extends AppCompatActivity implements Adapter_admin_r
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
                 Toast.makeText(admin_requests.this,"oopppsss..",Toast.LENGTH_SHORT);
-
             }
         });
 

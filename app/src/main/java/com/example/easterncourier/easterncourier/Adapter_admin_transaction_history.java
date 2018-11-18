@@ -14,9 +14,20 @@ import java.util.List;
 public class Adapter_admin_transaction_history extends RecyclerView.Adapter<Adapter_admin_transaction_history.myViewHolder> {
 
     Context mContextAdminTransactionHistory;
-    List<admin_transaction_history_item> mDataAdminTransactionHistory;
+    List<admin_request_item> mDataAdminTransactionHistory;
 
-    public Adapter_admin_transaction_history(Context mContextAdminTransactionHistory, List<admin_transaction_history_item> mDataAdminTransactionHistory) {
+    private OnItemClickListener mListener;
+
+    public interface OnItemClickListener{
+        void onItemClick(int position);
+
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener){
+        mListener=listener;
+    }
+
+    public Adapter_admin_transaction_history(Context mContextAdminTransactionHistory, List<admin_request_item> mDataAdminTransactionHistory) {
         this.mContextAdminTransactionHistory = mContextAdminTransactionHistory;
         this.mDataAdminTransactionHistory = mDataAdminTransactionHistory;
     }
@@ -24,17 +35,20 @@ public class Adapter_admin_transaction_history extends RecyclerView.Adapter<Adap
     @NonNull
     @Override
     public myViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater inflater=LayoutInflater.from(mContextAdminTransactionHistory);
-        View v=inflater.inflate(R.layout.activity_transaction_history,parent,false);
-        return new myViewHolder(v);
+        return new myViewHolder(LayoutInflater.from(mContextAdminTransactionHistory).inflate(R.layout.card_admin_transaction_history,parent,false));
     }
+
 
     @Override
     public void onBindViewHolder(@NonNull myViewHolder holder, int position) {
-        holder.transactionHistoryClientImage.setImageResource(mDataAdminTransactionHistory.get(position).getTransactionHistoryImage());
-        holder.transactionHistoryClientName.setText(mDataAdminTransactionHistory.get(position).getTransactionHistoryClientName());
-        holder.transactionHistoryDate.setText(mDataAdminTransactionHistory.get(position).getTransactionHistoryDate());
+        //holder.transactionHistoryClientImage.setImageResource(mDataAdminTransactionHistory.get(position).getTransactionHistoryImage());
+        holder.transactionFullName.setText(mDataAdminTransactionHistory.get(position).getClientFullName());
+        holder.transactionDate.setText(mDataAdminTransactionHistory.get(position).getClientDateRequested());
+        holder.transactionRequestId.setText(mDataAdminTransactionHistory.get(position).getRequestId());
+
+
     }
+
 
     @Override
     public int getItemCount() {
@@ -43,13 +57,26 @@ public class Adapter_admin_transaction_history extends RecyclerView.Adapter<Adap
 
 
     public class myViewHolder extends RecyclerView.ViewHolder{
-        ImageView transactionHistoryClientImage;
-        TextView transactionHistoryClientName,transactionHistoryDate;
+
+        TextView transactionFullName,transactionDate,transactionRequestId;
         public myViewHolder(View itemView) {
             super(itemView);
-            transactionHistoryClientImage=itemView.findViewById(R.id.transactionHistoryClientImage);
-            transactionHistoryClientName=itemView.findViewById(R.id.transactionHistoryClientName);
-            transactionHistoryDate=itemView.findViewById(R.id.transactionHistoryDate);
+            transactionFullName=itemView.findViewById(R.id.transactionFullName);
+            transactionDate=itemView.findViewById(R.id.transactionDate);
+            transactionRequestId=itemView.findViewById(R.id.transactionRequestId);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mListener != null){
+                        int position= getAdapterPosition();
+
+                        if (position != RecyclerView.NO_POSITION){
+                            mListener.onItemClick(position);
+                        }
+                    }
+                }
+            });
         }
     }
 

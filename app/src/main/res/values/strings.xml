@@ -10,4 +10,9 @@
     <string name="title_activity_receiver_location">Map</string>
     <string name="title_activity_courier_show_my_location">Map</string>
     <string name="title_activity_courier_show_my_location_sample">Map</string>
+
+    <string-array name="accountType">
+        <item>Courier</item>
+        <item>Client</item>
+    </string-array>
 </resources>

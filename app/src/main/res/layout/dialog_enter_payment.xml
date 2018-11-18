@@ -15,9 +15,7 @@
         android:layout_marginTop="191dp"
         android:text="Change:"
         android:textColor="@color/colorBackGround" />
-
     <EditText
-
         android:id="@+id/cashEt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

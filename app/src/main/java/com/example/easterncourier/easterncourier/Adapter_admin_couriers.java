@@ -57,7 +57,7 @@ public class Adapter_admin_couriers extends RecyclerView.Adapter<Adapter_admin_c
             super(itemView);
             courierImage=itemView.findViewById(R.id.courierImage);
             courierFullName=itemView.findViewById(R.id.courierFullName);
-            courierAddress=itemView.findViewById(R.id.courierAddress);
+            courierAddress=itemView.findViewById(R.id.streetEditText);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

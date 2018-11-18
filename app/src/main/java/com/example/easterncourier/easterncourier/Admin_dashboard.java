@@ -7,7 +7,7 @@ import android.support.v7.widget.CardView;
 import android.view.View;
 
 public class Admin_dashboard extends AppCompatActivity {
-    private CardView  cardViewRequest,cardViewCouriers;
+    private CardView  cardViewRequest,cardViewCouriers,cardViewAccounts,cardViewTransactions;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -15,7 +15,8 @@ public class Admin_dashboard extends AppCompatActivity {
 
         cardViewRequest=(CardView) findViewById(R.id.cardViewRequests);
         cardViewCouriers=findViewById(R.id.cardViewCouriers);
-
+        cardViewAccounts=findViewById(R.id.cardViewAccounts);
+        cardViewTransactions=findViewById(R.id.cardViewTransaction);
         cardViewRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -31,6 +32,26 @@ public class Admin_dashboard extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        cardViewAccounts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(Admin_dashboard.this,admin_accounts.class);
+                startActivity(intent);
+            }
+        });
+
+        cardViewTransactions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(Admin_dashboard.this,transaction_history.class);
+                startActivity(intent);
+            }
+        });
+
+
+
+
 
 
 

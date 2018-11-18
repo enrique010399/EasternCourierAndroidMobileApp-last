@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -19,6 +21,8 @@ import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -28,6 +32,10 @@ import com.example.easterncourier.easterncourier.databinding.ActivitySignInBindi
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApi;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -47,21 +55,42 @@ public class SignIn extends AppCompatActivity {
     private ActivitySignInBinding mBinding;
     private static final String TAG = "SignIn";
     private static final int ERROR_DIALOG_REQUEST =9001;
+    EditText userName,password;
     String accountFirstName;
     String accountLastName;
     String correct;
     String accountPhoneNumber;
+    FirebaseAuth mAuth;
+    ProgressBar progressBar;
+    FrameLayout signInBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
+
+
         mBinding= DataBindingUtil.setContentView(this,R.layout.activity_sign_in);
+        mAuth=FirebaseAuth.getInstance();
 
         list = new ArrayList<addCourierAccountItem>();
 
-
+        userName=  findViewById(R.id.usernameTf);
+        password=  findViewById(R.id.passwordTf);
 
         Button signUpBtn=(Button) findViewById(R.id.button2);
+        signInBtn=findViewById(R.id.signInBtn);
+
+        signInBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                progressBar=findViewById(R.id.progressBar2);
+                progressBar.setVisibility(View.VISIBLE);
+                sigIn();
+            }
+        });
+
 
         signUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,11 +100,112 @@ public class SignIn extends AppCompatActivity {
             }
         });
 
-        if(isServicesOk()){
+        if (haveNetwork()){
+
+        }
+        else if (!haveNetwork()){
             AlertDialog.Builder builder=new AlertDialog.Builder(SignIn.this);
-            builder.setMessage("Map services is ok")
+            builder.setMessage("Network Connection is not available!!!")
                     .create().show();
         }
+
+        if(isServicesOk()){
+            /*AlertDialog.Builder builder=new AlertDialog.Builder(SignIn.this);
+            builder.setMessage("Map services is ok")
+                    .create().show();*/
+        }
+    }
+
+
+
+    private void sigIn(){
+        if (userName.getText().toString().equals("admin010399") && password.getText().toString().equals("123456789")){
+            progressBar.setVisibility(View.GONE);
+            Intent intent=new Intent(SignIn.this,Admin_dashboard.class);
+            startActivity(intent);
+        }
+        else {
+            mAuth.signInWithEmailAndPassword(userName.getText().toString(),password.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+
+                    if (task.isSuccessful()){
+
+
+                        reference= FirebaseDatabase.getInstance().getReference().child("Client Accounts");
+                        reference.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                                for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
+                                    admin_request_item regi= dataSnapshot1.getValue(admin_request_item.class);
+                                    registerClientRequest registerClientRequest=dataSnapshot.getValue(com.example.easterncourier.easterncourier.registerClientRequest.class);
+
+                                    if (dataSnapshot1.getValue(com.example.easterncourier.easterncourier.registerClientRequest.class).getAccountId().equals(mAuth.getCurrentUser().getUid()
+                                    )){
+                                        progressBar.setVisibility(View.GONE);
+                                        Intent intent=new Intent(SignIn.this,homeDashBoard.class);
+                                        intent.putExtra("username",dataSnapshot1.getValue(com.example.easterncourier.easterncourier.registerClientRequest.class).getAccountUserName());
+                                        intent.putExtra("clientFullName", dataSnapshot1.getValue(com.example.easterncourier.easterncourier.registerClientRequest.class).getAccountFirstName()
+                                                +" "+dataSnapshot1.getValue(com.example.easterncourier.easterncourier.registerClientRequest.class).getAccountLastName());
+
+                                        intent.putExtra("accountPhoneNumber",dataSnapshot1.getValue(com.example.easterncourier.easterncourier.registerClientRequest.class).getAccountMobileNumber());
+
+                                        intent.putExtra("accountBirthday",dataSnapshot1.getValue(com.example.easterncourier.easterncourier.registerClientRequest.class).getAccountBirthDay()+
+                                        "/"+dataSnapshot1.getValue(com.example.easterncourier.easterncourier.registerClientRequest.class).getAccountBirthMonth()+"/"
+                                        +dataSnapshot1.getValue(com.example.easterncourier.easterncourier.registerClientRequest.class).getAccountBirthYear());
+
+                                        intent.putExtra("accountAddress",dataSnapshot1.getValue(com.example.easterncourier.easterncourier.registerClientRequest.class).getAccountAddressStreet()+" "+
+                                                dataSnapshot1.getValue(com.example.easterncourier.easterncourier.registerClientRequest.class).getAccountAddressBarangay()+" "+
+                                                dataSnapshot1.getValue(com.example.easterncourier.easterncourier.registerClientRequest.class).getAccountAddressCity()+" "+
+                                                dataSnapshot1.getValue(com.example.easterncourier.easterncourier.registerClientRequest.class).getAccountAddressProvince());
+                                        startActivity(intent);
+
+                                        //correct="Yes";
+
+                                    }
+                                    else{
+                                        correct="No";
+
+                                    }
+
+
+
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+                    else{
+                        AlertDialog.Builder builder=new AlertDialog.Builder(SignIn.this);
+                        builder.setMessage(task.getException().getMessage()).setNegativeButton("Retry",null)
+                                .create().show();
+                    }
+                }
+            });
+        }
+
+    }
+
+    private boolean haveNetwork(){
+        boolean have_wifi=false,have_MobileData=false;
+        ConnectivityManager connectivityManager=(ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        NetworkInfo[] networkInfos=connectivityManager.getAllNetworkInfo();
+        for (NetworkInfo info:networkInfos){
+            if (info.getTypeName().equalsIgnoreCase("WIFI")){
+                if (info.isConnected())
+                    have_wifi=true;
+            }
+            if (info.getTypeName().equalsIgnoreCase("MOBILE")){
+                if (info.isConnected())
+                    have_MobileData=true;
+            }
+        }
+        return have_MobileData||have_wifi;
     }
 
     public boolean isServicesOk(){
@@ -102,7 +232,10 @@ public class SignIn extends AppCompatActivity {
         return false;
     }
 
-    public void load(View view){
+
+
+
+    /*public void load(View view){
 
 
         reference= FirebaseDatabase.getInstance().getReference().child("Courier Accounts");
@@ -179,9 +312,9 @@ public class SignIn extends AppCompatActivity {
         signInRequest signInRequest=new signInRequest(userName.getText().toString(), password.getText().toString(), responseListener);
         RequestQueue queue= Volley.newRequestQueue(SignIn.this);
         queue.add(signInRequest);
-    }
+    }*/
 
-    private void animateButtonWidth(){
+    /*private void animateButtonWidth(){
         ValueAnimator animate=ValueAnimator.ofInt(mBinding.signInBtn.getMeasuredWidth(),getFinalWidth());
         animate.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -195,9 +328,9 @@ public class SignIn extends AppCompatActivity {
 
         animate.setDuration(250);
         animate.start();
-    }
+    }*/
 
-    private void fadeOutTextAndSetProgressDialog(){
+    /*private void fadeOutTextAndSetProgressDialog(){
         mBinding.signInBtnText.animate().alpha(0f).setDuration(250).setListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -205,14 +338,14 @@ public class SignIn extends AppCompatActivity {
                 showProgressDialog();
             }
         }).start();
-    }
+    }*/
 
-    private void showProgressDialog(){
+    /*private void showProgressDialog(){
         mBinding.progressBar.getIndeterminateDrawable().setColorFilter(Color.parseColor("#ffffff"), PorterDuff.Mode.SRC_IN);
         mBinding.progressBar.setVisibility(View.VISIBLE);
-    }
+    }*/
 
-    private void nextAction(){
+    /*private void nextAction(){
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -221,9 +354,9 @@ public class SignIn extends AppCompatActivity {
                 delayedStartNextActivity();
             }
         },2000);
-    }
+    }*/
 
-    private void revealButton(){
+    /*private void revealButton(){
         mBinding.signInBtn.setElevation(0f);
         mBinding.revealView.setVisibility(View.VISIBLE);
 
@@ -246,13 +379,13 @@ public class SignIn extends AppCompatActivity {
 
         reveal.start();
 
-    }
+    }*/
 
-    private void fadeOutProgressDialog(){
+    /*private void fadeOutProgressDialog(){
         mBinding.progressBar.animate().alpha(0f).setDuration(200).start();
-    }
+    }*/
 
-    private void delayedStartNextActivity(){
+    /*private void delayedStartNextActivity(){
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -265,9 +398,9 @@ public class SignIn extends AppCompatActivity {
                     SignIn.this.startActivity(intent);
             }
         },100);
-    }
+    }*/
 
-    private int getFinalWidth(){
+    /*private int getFinalWidth(){
         return (int) getResources().getDimension(R.dimen.get_width);
-    }
+    }*/
 }

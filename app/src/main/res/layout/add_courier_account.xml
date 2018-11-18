@@ -30,7 +30,7 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <EditText
-        android:id="@+id/courierPhoneNumber"
+        android:id="@+id/phoneNumberEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -55,7 +55,7 @@
         android:textColor="@color/colorWhite"
         android:textColorHint="@color/colorWhite"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/courierAddress" />
+        app:layout_constraintTop_toBottomOf="@+id/streetEditText" />
 
     <EditText
         android:id="@+id/lastNameEditText"
@@ -86,7 +86,7 @@
         app:layout_constraintTop_toBottomOf="@+id/courierPassword" />
 
     <EditText
-        android:id="@+id/courierAddress"
+        android:id="@+id/streetEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -106,7 +106,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="36dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/courierPhoneNumber"
+        app:layout_constraintTop_toBottomOf="@+id/phoneNumberEditText"
         app:srcCompat="@android:drawable/sym_def_app_icon" />
 
     <Button
@@ -117,7 +117,7 @@
         android:layout_marginTop="76dp"
         android:text="Choose Image"
         app:layout_constraintStart_toEndOf="@+id/courierImage"
-        app:layout_constraintTop_toBottomOf="@+id/courierPhoneNumber" />
+        app:layout_constraintTop_toBottomOf="@+id/phoneNumberEditText" />
 
     <EditText
         android:id="@+id/courierUserName"

@@ -8,25 +8,155 @@ import com.android.volley.toolbox.StringRequest;
 import java.util.HashMap;
 import java.util.Map;
 
-public class registerClientRequest extends StringRequest {
-    private static final String register_client_request_url = "https://easterncourier.000webhostapp.com/RegisterWithoutHash.php";
-    private Map<String, String> params;
+public class registerClientRequest  {
+    public String accountId,accountFirstName,accountLastName,accountGender
+            ,accountBirthDay,accountBirthMonth,accountBirthYear
+            ,accountAddressStreet,accountAddressBarangay,accountAddressCity
+            ,accountAddressProvince,accountAddressZipCode,accountMobileNumber
+            ,accountUserName,accountPassword;
 
-    public registerClientRequest(String accountUserName, String accountPassword, String accountFirstName, String accountLastName, String accountBirthDate,
-            String accountCurrentLocation, String accountType, Response.Listener<String> listener) {
-        super(Request.Method.POST, register_client_request_url, listener, null);
-        params = new HashMap<>();
-        params.put("accountUserName", accountUserName);
-        params.put("accountPassword", accountPassword);
-        params.put("accountFirstName", accountFirstName);
-        params.put("accountLastName", accountLastName);
-        params.put("accountBirthDate", accountBirthDate);
-        params.put("accountCurrentLocation", accountCurrentLocation);
-        params.put("accountType", accountType);
+
+
+
+    public registerClientRequest(){
+
     }
 
-    @Override
-    public Map<String, String> getParams() {
-        return params;
+    public registerClientRequest(String accountId, String accountFirstName, String accountLastName, String accountGender, String accountBirthDay, String accountBirthMonth, String accountBirthYear, String accountAddressStreet, String accountAddressBarangay, String accountAddressCity, String accountAddressProvince, String accountAddressZipCode, String accountMobileNumber, String accountUserName, String accountPassword) {
+        this.accountId = accountId;
+        this.accountFirstName = accountFirstName;
+        this.accountLastName = accountLastName;
+        this.accountGender = accountGender;
+        this.accountBirthDay = accountBirthDay;
+        this.accountBirthMonth = accountBirthMonth;
+        this.accountBirthYear = accountBirthYear;
+        this.accountAddressStreet = accountAddressStreet;
+        this.accountAddressBarangay = accountAddressBarangay;
+        this.accountAddressCity = accountAddressCity;
+        this.accountAddressProvince = accountAddressProvince;
+        this.accountAddressZipCode = accountAddressZipCode;
+        this.accountMobileNumber = accountMobileNumber;
+        this.accountUserName = accountUserName;
+        this.accountPassword = accountPassword;
+    }
+
+    public String getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
+    }
+
+    public String getAccountFirstName() {
+        return accountFirstName;
+    }
+
+    public void setAccountFirstName(String accountFirstName) {
+        this.accountFirstName = accountFirstName;
+    }
+
+    public String getAccountLastName() {
+        return accountLastName;
+    }
+
+    public void setAccountLastName(String accountLastName) {
+        this.accountLastName = accountLastName;
+    }
+
+    public String getAccountGender() {
+        return accountGender;
+    }
+
+    public void setAccountGender(String accountGender) {
+        this.accountGender = accountGender;
+    }
+
+    public String getAccountBirthDay() {
+        return accountBirthDay;
+    }
+
+    public void setAccountBirthDay(String accountBirthDay) {
+        this.accountBirthDay = accountBirthDay;
+    }
+
+    public String getAccountBirthMonth() {
+        return accountBirthMonth;
+    }
+
+    public void setAccountBirthMonth(String accountBirthMonth) {
+        this.accountBirthMonth = accountBirthMonth;
+    }
+
+    public String getAccountBirthYear() {
+        return accountBirthYear;
+    }
+
+    public void setAccountBirthYear(String accountBirthYear) {
+        this.accountBirthYear = accountBirthYear;
+    }
+
+    public String getAccountAddressStreet() {
+        return accountAddressStreet;
+    }
+
+    public void setAccountAddressStreet(String accountAddressStreet) {
+        this.accountAddressStreet = accountAddressStreet;
+    }
+
+    public String getAccountAddressBarangay() {
+        return accountAddressBarangay;
+    }
+
+    public void setAccountAddressBarangay(String accountAddressBarangay) {
+        this.accountAddressBarangay = accountAddressBarangay;
+    }
+
+    public String getAccountAddressCity() {
+        return accountAddressCity;
+    }
+
+    public void setAccountAddressCity(String accountAddressCity) {
+        this.accountAddressCity = accountAddressCity;
+    }
+
+    public String getAccountAddressProvince() {
+        return accountAddressProvince;
+    }
+
+    public void setAccountAddressProvince(String accountAddressProvince) {
+        this.accountAddressProvince = accountAddressProvince;
+    }
+
+    public String getAccountAddressZipCode() {
+        return accountAddressZipCode;
+    }
+
+    public void setAccountAddressZipCode(String accountAddressZipCode) {
+        this.accountAddressZipCode = accountAddressZipCode;
+    }
+
+    public String getAccountMobileNumber() {
+        return accountMobileNumber;
+    }
+
+    public void setAccountMobileNumber(String accountMobileNumber) {
+        this.accountMobileNumber = accountMobileNumber;
+    }
+
+    public String getAccountUserName() {
+        return accountUserName;
+    }
+
+    public void setAccountUserName(String accountUserName) {
+        this.accountUserName = accountUserName;
+    }
+
+    public String getAccountPassword() {
+        return accountPassword;
+    }
+
+    public void setAccountPassword(String accountPassword) {
+        this.accountPassword = accountPassword;
     }
 }

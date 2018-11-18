@@ -43,8 +43,6 @@ public class admin_couriers extends AppCompatActivity implements Adapter_admin_c
             }
         });
 
-
-
         recyclerView=(RecyclerView) findViewById(R.id.rv_Couriers);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -54,11 +52,9 @@ public class admin_couriers extends AppCompatActivity implements Adapter_admin_c
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
                 for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
                     admin_couriers_item admin_couriers_item1= dataSnapshot1.getValue(admin_couriers_item.class);
                     list.add(admin_couriers_item1);
-
                 }
                 adapter_admin_couriers=new Adapter_admin_couriers(admin_couriers.this,list);
                 recyclerView.setAdapter(adapter_admin_couriers);
@@ -67,9 +63,7 @@ public class admin_couriers extends AppCompatActivity implements Adapter_admin_c
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
                 Toast.makeText(admin_couriers.this,"oopppsss..",Toast.LENGTH_SHORT);
-
             }
         });
 
@@ -81,6 +75,7 @@ public class admin_couriers extends AppCompatActivity implements Adapter_admin_c
 
     @Override
     public void onItemClick(int position) {
+
         admin_couriers_item admin_couriers_item1=list.get(position);
         Toast.makeText(admin_couriers.this,admin_couriers_item1.getCourierFirstName().toString(),Toast.LENGTH_LONG);
 
@@ -92,8 +87,8 @@ public class admin_couriers extends AppCompatActivity implements Adapter_admin_c
         intent.putExtra("ifCourier","Courier");
         intent.putExtra("BirthDate",admin_couriers_item1.getCourierBirthDate());
         intent.putExtra("UserName",admin_couriers_item1.getCourierUserName());
+        intent.putExtra("ImAClient","NO");
         startActivity(intent);
-
 
     }
 }

@@ -27,13 +27,24 @@ public class Profile extends AppCompatActivity {
 
         previousClientsBtn=findViewById(R.id.viewPreviousClientsBtn);
 
+
+
         previousClientsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(Profile.this,courier_client_request.class);
-                intent.putExtra("Courier UserName",getIntent().getExtras().getString("UserName"));
-                intent.putExtra("requestForFinished","Yes");
-                startActivity(intent);
+                if (getIntent().getExtras().getString("ifCourier").equals("Client")){
+                    Intent intent=new Intent(Profile.this,History.class);
+                    intent.putExtra("username",getIntent().getExtras().getString("username"));
+                    intent.putExtra("requestForFinished","Yes");
+                    startActivity(intent);
+                }
+                else{
+                    Intent intent=new Intent(Profile.this,courier_client_request.class);
+                    intent.putExtra("Courier UserName",getIntent().getExtras().getString("UserName"));
+                    intent.putExtra("requestForFinished","Yes");
+                    startActivity(intent);
+                }
+
             }
         });
 

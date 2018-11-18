@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".courierSignIn">
+
+    <EditText
+        android:id="@+id/courierEmailEt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="182dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="37dp"
+        android:ems="10"
+        android:hint="Email"
+        android:textColorHint="@color/colorWhite"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/courierPasswordEt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="182dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="43dp"
+        android:ems="10"
+        android:hint="Password"
+        android:textColorHint="@color/colorWhite"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/courierEmailEt" />
+
+    <Button
+        android:id="@+id/courierSignInBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="63dp"
+        android:text="SignIn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/courierPasswordEt" />
+</android.support.constraint.ConstraintLayout>

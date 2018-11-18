@@ -30,7 +30,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/courierAddress"
+        android:id="@+id/streetEditText"
         android:layout_width="257dp"
         android:layout_height="30dp"
         android:layout_marginStart="16dp"

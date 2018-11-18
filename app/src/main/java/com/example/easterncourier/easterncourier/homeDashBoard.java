@@ -6,13 +6,14 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.view.View;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
 public class homeDashBoard extends AppCompatActivity implements View.OnClickListener{
     private CardView cardViewBook,cardViewProfile,cardViewNotification,cardViewMessages,cardViewHistory;
     String clientUserName;
-    String clientFullName;
+    String clientFullName,clientPhoneNumber,clientBirthDate,clientAddress;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -29,6 +30,10 @@ public class homeDashBoard extends AppCompatActivity implements View.OnClickList
         else{
             clientUserName=getIntent().getExtras().getString("username");
             clientFullName=getIntent().getExtras().getString("clientFullName");
+            clientPhoneNumber=getIntent().getExtras().getString("accountPhoneNumber");
+            clientBirthDate=getIntent().getExtras().getString("accountBirthday");
+            clientAddress=getIntent().getExtras().getString("accountAddress");
+            Toast.makeText(this,clientBirthDate,Toast.LENGTH_LONG).show();
         }
 
         cardViewBook=(CardView) findViewById(R.id.cardViewBook);
@@ -56,15 +61,28 @@ public class homeDashBoard extends AppCompatActivity implements View.OnClickList
             i.putExtra("clientFullName",clientFullName);
             startActivity(i);
             break;
-            case R.id.cardViewProfile: i=new Intent(this,Profile.class);startActivity(i);break;
+
+
+            case R.id.cardViewProfile: i=new Intent(this,Profile.class);
+            i.putExtra("Full Name",clientFullName);
+            i.putExtra("Contact Number",clientPhoneNumber);
+            i.putExtra("Address",clientAddress);
+            i.putExtra("BirthDate",clientBirthDate);
+            i.putExtra("ImAClient","YES");
+
+            startActivity(i);break;
             case R.id.cardViewNotification: i=new Intent(this,Notification.class);
                 i.putExtra("Client UserName",clientUserName);
             startActivity(i);break;
-            /*case R.id.cardViewMessages: i=new Intent(this,Messages.class);
+            /*case R.id.cardViewMessages: i=new Intent(thiss,Messages.class);
             i.putExtra("Client UserName",clientUserName);
             startActivity(i);
             break;*/
-            case R.id.cardViewHistory: i=new Intent(this,History.class);startActivity(i);break;
+            case R.id.cardViewHistory: i=new Intent(this,History.class);
+            i.putExtra("username",clientUserName);
+            i.putExtra("ifCourier","Client");
+
+            startActivity(i);break;
             default:break;
 
 

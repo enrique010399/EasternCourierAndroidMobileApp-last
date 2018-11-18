@@ -47,7 +47,7 @@ public class Adapter_admin_choose_courier extends RecyclerView.Adapter<Adapter_a
     @Override
     public void onBindViewHolder(@NonNull myViewHolder myViewHolder, int i) {
         String FullName=chooseCourier.get(i).getCourierFirstName()+" "+chooseCourier.get(i).getCourierLastName();
-        Picasso.get().load(chooseCourier.get(i).getCourierImage()).into(myViewHolder.courierImage);
+        //Picasso.get().load(chooseCourier.get(i).getCourierImage()).into(myViewHolder.courierImage);
         myViewHolder.courierFullName.setText(FullName);
         myViewHolder.courierUserName.setText(chooseCourier.get(i).getCourierUserName());
     }

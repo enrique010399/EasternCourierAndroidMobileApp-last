@@ -71,6 +71,7 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.TimerTask;
@@ -125,14 +126,18 @@ public class admin_request_details extends AppCompatActivity implements courier_
     private CountryCodePicker ccp;
     private static final int REQUEST_SMS=0;
     private BroadcastReceiver sentStatusReceiver,deliveredStatusReceiver;
-    public  int bill,change,cash;
+    public  int bill=0,change,cash;
+
+    ArrayList<admin_request_item> list ;
+    DatabaseReference reference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.admin_request_details);
         //CheckPermission();
 
-
+        list = new ArrayList<admin_request_item>();
+        reference=FirebaseDatabase.getInstance().getReference().child("Client Request");
         requestIdTv = findViewById(R.id.requestIdTv);
         senderNameTv = findViewById(R.id.senderFullNameTv);
         receiverNameTv = findViewById(R.id.receiverNameTv);
@@ -176,6 +181,7 @@ public class admin_request_details extends AppCompatActivity implements courier_
             }
 
         } else if (ifCourier.equals("Admin")) {
+
             showMyLocationBtn.setVisibility(View.INVISIBLE);
             assignCourierBtn.setVisibility(View.VISIBLE);
             onTheWayBtn.setVisibility(View.INVISIBLE);
@@ -272,10 +278,11 @@ public class admin_request_details extends AppCompatActivity implements courier_
         assignCourierBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(admin_request_details.this, com.example.easterncourier.easterncourier.admin_choose_courier.class);
-                intent.putExtra("Request Id", requestIdTv.getText());
-                intent.putExtra("Receiver Contact Number",getIntent().getExtras().getString("Receiver Contact Number"));
-                startActivity(intent);
+
+                checkBill();
+
+
+
             }
         });
 
@@ -297,6 +304,40 @@ public class admin_request_details extends AppCompatActivity implements courier_
                 admin_enter_bill_dialog1.show(getSupportFragmentManager(),"Bill");
             }
         });
+
+
+    }
+
+    private void checkBill(){
+        final Integer[] bill1 = {0};
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
+                    admin_request_item admin_request_item1= dataSnapshot1.getValue(admin_request_item.class);
+                    if (admin_request_item1.requestId.equals(getIntent().getExtras().getString("Request Bill"))){
+                        bill1[0] =Integer.parseInt(admin_request_item1.getRequestBill());
+
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        //if (bill1[0] !=0){
+            Intent intent = new Intent(admin_request_details.this, com.example.easterncourier.easterncourier.admin_choose_courier.class);
+            intent.putExtra("Request Id", requestIdTv.getText());
+            intent.putExtra("Receiver Contact Number",getIntent().getExtras().getString("Receiver Contact Number"));
+            startActivity(intent);
+        //}
+        //else{
+            //AlertDialog.Builder builder=new AlertDialog.Builder(admin_request_details.this);
+            //builder.setMessage("You must enter the bill of the service first!!").setNegativeButton("Retry",null)
+                    //.create().show();
+        //}
 
 
     }
@@ -685,6 +726,7 @@ public class admin_request_details extends AppCompatActivity implements courier_
         //getIntent().getExtras().getString("Request Change");
         if (bill<=cash){
             change=cash-bill;
+
             AlertDialog.Builder builder = new AlertDialog.Builder(admin_request_details.this);
             builder.setMessage("Request Paid Sucessfully,, Your Change is "+change.toString())
                     .create().show();

@@ -6,31 +6,76 @@
     android:layout_height="match_parent"
     tools:context=".accountTypeOption">
 
-    <Button
-        android:id="@+id/startCourierBtn"
-        android:layout_width="132dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="334dp"
-        android:layout_marginEnd="140dp"
-        android:layout_marginStart="139dp"
-        android:layout_marginTop="27dp"
-        android:text="Courier"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <ImageView
+
+        android:layout_width="277dp"
+        android:layout_height="157dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="36dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/startClientBtn" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logo" />
+
+    <ImageView
+        android:id="@+id/imageView10"
+        android:layout_width="325dp"
+        android:layout_height="153dp"
+        android:layout_alignBottom="@+id/usernameTf"
+        android:layout_centerHorizontal="true"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="164dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/final_logo" />
+
+    <TextView
+        android:id="@+id/textView30"
+        android:layout_width="wrap_content"
+        android:layout_height="42dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="36dp"
+        android:text="Select an account"
+        android:textColor="@color/colorSemiWhite"
+        android:textSize="25dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView10" />
+
+
+    <Button
+        android:id="@+id/startCourierBtn"
+        android:layout_width="155dp"
+        android:layout_height="wrap_content"
+        android:text="Courier"
+        android:textColor="@color/colorWhite"
+        android:textSize="18sp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/signin_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView30" />
 
     <Button
         android:id="@+id/startClientBtn"
-        android:layout_width="132dp"
+        android:layout_width="155dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="27dp"
-        android:layout_marginEnd="140dp"
-        android:layout_marginStart="139dp"
-        android:layout_marginTop="202dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/signin_btn"
         android:text="Client"
-        app:layout_constraintBottom_toTopOf="@+id/startCourierBtn"
+        android:textColor="@color/colorWhite"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/startCourierBtn" />
 </android.support.constraint.ConstraintLayout>

@@ -8,6 +8,8 @@
     android:background="@color/colorBackGroundCard"
     >
 
+
+
     <ImageView
         android:id="@+id/courierImage"
         android:layout_width="102dp"

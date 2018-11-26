@@ -35,7 +35,6 @@ public class courier_enter_requestid_dialog extends AppCompatDialogFragment  {
                     public void onClick(DialogInterface dialog, int which) {
                         String requestId=requestIdEt.getText().toString();
                         listener.applyTexts(requestId);
-
                     }
                 });
         requestIdEt=view.findViewById(R.id.requestIdEt);

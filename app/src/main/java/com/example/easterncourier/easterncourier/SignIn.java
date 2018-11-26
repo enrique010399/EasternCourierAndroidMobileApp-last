@@ -34,8 +34,13 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApi;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -47,8 +52,9 @@ import org.json.JSONObject;
 
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
-public class SignIn extends AppCompatActivity {
+public class SignIn extends AppCompatActivity implements sigin_enter_verification_code.ExampleDialogListener {
     ArrayList<addCourierAccountItem> list ;
     DatabaseReference reference;
 
@@ -63,6 +69,19 @@ public class SignIn extends AppCompatActivity {
     FirebaseAuth mAuth;
     ProgressBar progressBar;
     FrameLayout signInBtn;
+    String contactNumber;
+
+    String codeSent;
+    private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -73,6 +92,39 @@ public class SignIn extends AppCompatActivity {
 
         mBinding= DataBindingUtil.setContentView(this,R.layout.activity_sign_in);
         mAuth=FirebaseAuth.getInstance();
+        /*mCallbacks=new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+            @Override
+            public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
+
+            }
+
+            @Override
+            public void onVerificationFailed(FirebaseException e) {
+
+            }
+        };*/
+        mCallbacks=new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+            @Override
+            public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
+                signInWithPhoneAuthCredential(phoneAuthCredential);
+            }
+
+            @Override
+            public void onVerificationFailed(FirebaseException e) {
+
+            }
+
+            @Override
+            public void onCodeSent(String s, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+                Toast.makeText(SignIn.this,"Verification code has been send on your number",Toast.LENGTH_SHORT).show();
+                super.onCodeSent(s, forceResendingToken);
+                codeSent=s;
+            }
+        };
+
+
+
+
 
         list = new ArrayList<addCourierAccountItem>();
 
@@ -88,6 +140,12 @@ public class SignIn extends AppCompatActivity {
                 progressBar=findViewById(R.id.progressBar2);
                 progressBar.setVisibility(View.VISIBLE);
                 sigIn();
+               //sigIn();
+                /*PhoneAuthProvider.getInstance().verifyPhoneNumber("+639183929971",
+                        60,
+                        TimeUnit.SECONDS,
+                        SignIn.this,
+                        mCallbacks);*/
             }
         });
 
@@ -130,55 +188,11 @@ public class SignIn extends AppCompatActivity {
                 public void onComplete(@NonNull Task<AuthResult> task) {
 
                     if (task.isSuccessful()){
-
-
-                        reference= FirebaseDatabase.getInstance().getReference().child("Client Accounts");
-                        reference.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                                for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
-                                    admin_request_item regi= dataSnapshot1.getValue(admin_request_item.class);
-                                    registerClientRequest registerClientRequest=dataSnapshot.getValue(com.example.easterncourier.easterncourier.registerClientRequest.class);
-
-                                    if (dataSnapshot1.getValue(com.example.easterncourier.easterncourier.registerClientRequest.class).getAccountId().equals(mAuth.getCurrentUser().getUid()
-                                    )){
-                                        progressBar.setVisibility(View.GONE);
-                                        Intent intent=new Intent(SignIn.this,homeDashBoard.class);
-                                        intent.putExtra("username",dataSnapshot1.getValue(com.example.easterncourier.easterncourier.registerClientRequest.class).getAccountUserName());
-                                        intent.putExtra("clientFullName", dataSnapshot1.getValue(com.example.easterncourier.easterncourier.registerClientRequest.class).getAccountFirstName()
-                                                +" "+dataSnapshot1.getValue(com.example.easterncourier.easterncourier.registerClientRequest.class).getAccountLastName());
-
-                                        intent.putExtra("accountPhoneNumber",dataSnapshot1.getValue(com.example.easterncourier.easterncourier.registerClientRequest.class).getAccountMobileNumber());
-
-                                        intent.putExtra("accountBirthday",dataSnapshot1.getValue(com.example.easterncourier.easterncourier.registerClientRequest.class).getAccountBirthDay()+
-                                        "/"+dataSnapshot1.getValue(com.example.easterncourier.easterncourier.registerClientRequest.class).getAccountBirthMonth()+"/"
-                                        +dataSnapshot1.getValue(com.example.easterncourier.easterncourier.registerClientRequest.class).getAccountBirthYear());
-
-                                        intent.putExtra("accountAddress",dataSnapshot1.getValue(com.example.easterncourier.easterncourier.registerClientRequest.class).getAccountAddressStreet()+" "+
-                                                dataSnapshot1.getValue(com.example.easterncourier.easterncourier.registerClientRequest.class).getAccountAddressBarangay()+" "+
-                                                dataSnapshot1.getValue(com.example.easterncourier.easterncourier.registerClientRequest.class).getAccountAddressCity()+" "+
-                                                dataSnapshot1.getValue(com.example.easterncourier.easterncourier.registerClientRequest.class).getAccountAddressProvince());
-                                        startActivity(intent);
-
-                                        //correct="Yes";
-
-                                    }
-                                    else{
-                                        correct="No";
-
-                                    }
-
-
-
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
+                        checkEmailVerfication();
+                        /*sendVerificationCode();
+                        sigin_enter_verification_code sigin_enter_verification_code=new sigin_enter_verification_code();
+                        sigin_enter_verification_code.show(getSupportFragmentManager(),"Verification");
+                        */
                     }
                     else{
                         AlertDialog.Builder builder=new AlertDialog.Builder(SignIn.this);
@@ -188,6 +202,58 @@ public class SignIn extends AppCompatActivity {
                 }
             });
         }
+
+    }
+    private void checkEmailVerfication(){
+        FirebaseUser firebaseUser=mAuth.getCurrentUser();
+        Boolean emailFlag=firebaseUser.isEmailVerified();
+        if (emailFlag){
+            reference= FirebaseDatabase.getInstance().getReference().child("Client Accounts");
+            reference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                    for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
+                        admin_request_item regi= dataSnapshot1.getValue(admin_request_item.class);
+                        registerClientRequest registerClientRequest=dataSnapshot.getValue(com.example.easterncourier.easterncourier.registerClientRequest.class);
+
+                        if (dataSnapshot1.getValue(com.example.easterncourier.easterncourier.registerClientRequest.class).getAccountId().equals(mAuth.getCurrentUser().getUid()
+                        )){
+                            progressBar.setVisibility(View.GONE);
+                            Intent intent=new Intent(SignIn.this,homeDashBoard.class);
+                            intent.putExtra("username",dataSnapshot1.getValue(com.example.easterncourier.easterncourier.registerClientRequest.class).getAccountUserName());
+                            intent.putExtra("clientFullName", dataSnapshot1.getValue(com.example.easterncourier.easterncourier.registerClientRequest.class).getAccountFirstName()
+                                    +" "+dataSnapshot1.getValue(com.example.easterncourier.easterncourier.registerClientRequest.class).getAccountLastName());
+
+                            intent.putExtra("accountPhoneNumber",dataSnapshot1.getValue(com.example.easterncourier.easterncourier.registerClientRequest.class).getAccountMobileNumber());
+
+                            intent.putExtra("accountBirthday",dataSnapshot1.getValue(com.example.easterncourier.easterncourier.registerClientRequest.class).getAccountBirthDay()+
+                                    "/"+dataSnapshot1.getValue(com.example.easterncourier.easterncourier.registerClientRequest.class).getAccountBirthMonth()+"/"
+                                    +dataSnapshot1.getValue(com.example.easterncourier.easterncourier.registerClientRequest.class).getAccountBirthYear());
+
+                            intent.putExtra("accountAddress",dataSnapshot1.getValue(com.example.easterncourier.easterncourier.registerClientRequest.class).getAccountAddressStreet()+" "+
+                                    dataSnapshot1.getValue(com.example.easterncourier.easterncourier.registerClientRequest.class).getAccountAddressBarangay()+" "+
+                                    dataSnapshot1.getValue(com.example.easterncourier.easterncourier.registerClientRequest.class).getAccountAddressCity()+" "+
+                                    dataSnapshot1.getValue(com.example.easterncourier.easterncourier.registerClientRequest.class).getAccountAddressProvince());
+
+                            contactNumber=dataSnapshot1.getValue(com.example.easterncourier.easterncourier.registerClientRequest.class).getAccountMobileNumber();
+                            startActivity(intent);
+                            //correct="Yes";
+                        }
+                        else{
+                            correct="No";
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+            //startActivity(new Intent(this,homeDashBoard.class));
+        }
+
 
     }
 
@@ -231,6 +297,95 @@ public class SignIn extends AppCompatActivity {
         }
         return false;
     }
+
+    private void sendVerificationCode(){
+        reference= FirebaseDatabase.getInstance().getReference().child("Client Accounts");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
+                    admin_request_item regi= dataSnapshot1.getValue(admin_request_item.class);
+                    registerClientRequest registerClientRequest=dataSnapshot.getValue(com.example.easterncourier.easterncourier.registerClientRequest.class);
+
+                    if (dataSnapshot1.getValue(com.example.easterncourier.easterncourier.registerClientRequest.class).getAccountId().equals(mAuth.getCurrentUser().getUid()
+                    )){
+
+                        contactNumber=dataSnapshot1.getValue(com.example.easterncourier.easterncourier.registerClientRequest.class).getAccountMobileNumber();
+
+
+                        /*PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks=new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                            @Override
+                            public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
+
+                            }
+
+                            @Override
+                            public void onVerificationFailed(FirebaseException e) {
+
+                            }
+
+                            @Override
+                            public void onCodeSent(String s, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+                                super.onCodeSent(s, forceResendingToken);
+                                codeSent=s;
+                            }
+                        };*/
+
+                        PhoneAuthProvider.getInstance().verifyPhoneNumber(contactNumber,
+                                60,
+                                TimeUnit.SECONDS,
+                                SignIn.this,
+                                mCallbacks);
+
+
+
+
+                    }
+                    else{
+                        correct="No";
+
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+
+
+
+
+    @Override
+    public void applyTexts(String verificationCodeEnteredByUser) {
+        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(codeSent,verificationCodeEnteredByUser);
+        signInWithPhoneAuthCredential(credential);
+    }
+    private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+
+
+                        } else {
+                            if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+                                // The verification code entered was invalid
+                                Toast.makeText(SignIn.this,"Incorrect Verification Code",Toast.LENGTH_LONG).show();
+                            }
+
+                        }
+                    }
+                });
+    }
+
 
 
 

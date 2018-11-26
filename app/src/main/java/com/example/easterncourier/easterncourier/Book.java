@@ -17,9 +17,12 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.webkit.MimeTypeMap;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,6 +54,8 @@ import com.squareup.picasso.Picasso;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
 public class Book extends AppCompatActivity implements LocationListener {
+    Spinner kiloSpinner;
+    ArrayAdapter<CharSequence> kiloSpinnerAdapter;
 
     private static final int PICK_IMAGE_REQUEST=1;
     private Button mButtonChooseImage;
@@ -76,6 +81,7 @@ public class Book extends AppCompatActivity implements LocationListener {
 
     String whichLocation;
     String onActivityResult;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +91,13 @@ public class Book extends AppCompatActivity implements LocationListener {
 
         //FirebaseDataBase
         databaseClientRequest = FirebaseDatabase.getInstance().getReference("Client Request");
+        kiloSpinner=findViewById(R.id.chooseKgSpinner);
+
+        kiloSpinnerAdapter=ArrayAdapter.createFromResource(this,R.array.packageWeight,android.R.layout.simple_spinner_item);
+        kiloSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        kiloSpinner.setAdapter(kiloSpinnerAdapter);
+
+
 
         mButtonChooseImage=findViewById(R.id.uploadPackageImage);
         mImageView=findViewById(R.id.packageImage);
@@ -92,6 +105,38 @@ public class Book extends AppCompatActivity implements LocationListener {
         final EditText receiverName=findViewById(R.id.receiverNameEditText);
         final EditText packageDescription=findViewById(R.id.requestDescription);
         final EditText receiverContactNumber=findViewById(R.id.receiverContactNumberEditText);
+        final TextView packageRateTv = findViewById(R.id.packageRateTv);
+
+
+        kiloSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getBaseContext(),parent.getItemAtPosition(position)+" selected",Toast.LENGTH_LONG).show();
+
+                if (parent.getItemAtPosition(position).equals("0.5kg-3.0kg")){
+                    packageRateTv.setText("215.00");
+                }
+                if (parent.getItemAtPosition(position).equals("4.0kg-4.9kg")){
+                    packageRateTv.setText("245.00");
+                }
+                if (parent.getItemAtPosition(position).equals("5.0kg-9.0kg")){
+                    packageRateTv.setText("375.00");
+                }
+                if (parent.getItemAtPosition(position).equals("10.0kg")){
+                    packageRateTv.setText("580.00");
+                }
+
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+
         Button chooseCurrentLOcation=findViewById(R.id.showReceiverLocationBtn);
         chooseCurrentLOcation.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -169,11 +214,17 @@ public class Book extends AppCompatActivity implements LocationListener {
                     System.out.println(formatter.format(date));
                     String id=databaseClientRequest.push().getKey();
                     admin_request_item adminRequestItem=new admin_request_item(id,tvLati,tvLongi,droppingPointLatitude,droppingPointLongitude,receiverName.getText().toString(),packageDescription.getText().toString(),getIntent().getExtras().getString("username"),
-                            getIntent().getExtras().getString("clientFullName"), formatter.format(date)+"",mImageUri+"","Not Assign","Not Assign","Not Assign","Not Yet",receiverContactNumber.getText().toString(),"0","0","0");
+                            getIntent().getExtras().getString("clientFullName"), formatter.format(date)+"",mImageUri+"","Not Assign","Not Assign","Not Assign","Not Yet",receiverContactNumber.getText().toString(),packageRateTv.getText().toString(),"0","0");
                     databaseClientRequest.child(id).setValue(adminRequestItem);
 
                     Toast.makeText(Book.this,"Request Sent",Toast.LENGTH_LONG).show();
-
+                    Intent intent=new Intent(Book.this,homeDashBoard.class);
+                    intent.putExtra("clientFullName",getIntent().getExtras().getString("clientFullName"));
+                    intent.putExtra("username",getIntent().getExtras().getString("username"));
+                    intent.putExtra("accountPhoneNumber",getIntent().getExtras().getString("accountPhoneNumber"));
+                    intent.putExtra("accountBirthDay",getIntent().getExtras().getString("accountBirthday"));
+                    intent.putExtra("accountAddress",getIntent().getExtras().getString("accountAddress"));
+                    startActivity(intent);
 
                 }
                 else{

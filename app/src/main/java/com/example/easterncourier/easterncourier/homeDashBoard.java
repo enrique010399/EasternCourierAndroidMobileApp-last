@@ -59,6 +59,9 @@ public class homeDashBoard extends AppCompatActivity implements View.OnClickList
             case R.id.cardViewBook: i=new Intent(this,Book.class);
             i.putExtra("username",clientUserName);
             i.putExtra("clientFullName",clientFullName);
+            i.putExtra("accountPhoneNUmber",clientPhoneNumber);
+            i.putExtra("accountBirthday",clientBirthDate);
+            i.putExtra("accountAddress",clientAddress);
             startActivity(i);
             break;
 

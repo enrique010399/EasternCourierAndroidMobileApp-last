@@ -15,4 +15,10 @@
         <item>Client</item>
         <item>Courier</item>
     </string-array>
+    <string-array name="packageWeight">
+        <item>0.5kg-3.0kg</item>
+        <item>4.0kg-4.9kg</item>
+        <item>5.0kg-9.0kg</item>
+        <item>10.0kg-12.0kg</item>
+    </string-array>
 </resources>

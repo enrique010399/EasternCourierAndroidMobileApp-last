@@ -20,6 +20,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 
 import org.json.JSONException;
@@ -149,6 +150,7 @@ public class register_client_account extends AppCompatActivity {
                 progressBar.setVisibility(View.GONE);
 
                 if (task.isSuccessful()){
+                    sendEmailVerification();
 
                     final registerClientRequest registerClientRequest=new registerClientRequest(
                             mAuth.getCurrentUser().getUid(),
@@ -176,11 +178,10 @@ public class register_client_account extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<Void> task) {
                                     //progressBar.setVisibility(View.GONE);
                                     if (task.isSuccessful()){
-                                        AlertDialog.Builder builder=new AlertDialog.Builder(register_client_account.this);
+                                        /*AlertDialog.Builder builder=new AlertDialog.Builder(register_client_account.this);
                                         builder.setMessage("Registered Successfully!!!")
-                                                .create().show();
-                                        Intent intent=new Intent(register_client_account.this,SignIn.class);
-                                        startActivity(intent);
+                                                .create().show();*/
+
                                     }
                                     else{
                                         Toast.makeText(register_client_account.this,"SignUp Failed!!!",Toast.LENGTH_LONG);
@@ -201,6 +202,29 @@ public class register_client_account extends AppCompatActivity {
             }
         });
 
+    }
+
+
+    private void sendEmailVerification(){
+        FirebaseUser firebaseUser=mAuth.getCurrentUser();
+        if (firebaseUser!=null){
+            firebaseUser.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+
+                    if (task.isSuccessful()){
+                        Toast.makeText(register_client_account.this, "Successfully Registered, Check your email for the Verification", Toast.LENGTH_LONG).show();
+                        mAuth.signOut();
+                        finish();
+                        startActivity(new Intent(register_client_account.this,SignIn.class));
+                    }
+                    else{
+                        //Toast.makeText(register_client_account.this, "", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+            });
+        }
     }
 
 }

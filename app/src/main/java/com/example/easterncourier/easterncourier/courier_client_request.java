@@ -120,7 +120,8 @@ public class courier_client_request extends AppCompatActivity implements Adapter
         intent.putExtra("Request Change",admin_request_item1.getRequestChange());
         intent.putExtra("Receiver Longitude",admin_request_item1.getReceiverLocationLongitude());
         intent.putExtra("Receiver Latitude",admin_request_item1.getReceiverLocationLatitude());
-
+        intent.putExtra("Client Date Requested",admin_request_item1.getClientDateRequested());
+        intent.putExtra("Courier Name",admin_request_item1.getRequestAssignedCourierFullName());
         startActivity(intent);
 
 

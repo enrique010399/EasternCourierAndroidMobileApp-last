@@ -6,6 +6,7 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -13,6 +14,7 @@ import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.nfc.Tag;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -54,7 +56,19 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -102,6 +116,7 @@ public class courierLocation extends FragmentActivity implements OnMapReadyCallb
         Double clientLongitude = Double.parseDouble(getIntent().getExtras().getString("Sender Longitude"));
         final LatLng clientLocation = new LatLng(clientLatitude, clientLongitude);
 
+
         //mMap.setMapType(mMap.MAP_TYPE_SATELLITE);
 
 
@@ -135,17 +150,56 @@ public class courierLocation extends FragmentActivity implements OnMapReadyCallb
                 courierLocationLatitude =location.latitude;
                 courierLocationLongitude =location.longitude;
 
+                String str_origin = "origin=" + courierLocation.latitude + "," + courierLocation.longitude;
+                String str_dest = "destination=" + clientLocation.latitude + "," + clientLocation.longitude;
+                String sensor = "sensor=false";
+                String parameters = str_origin + "&" + str_dest + "&" + sensor;
+                String output = "json";
+                String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters;
+
                 LatLng latLng=new LatLng(location.latitude,location.longitude);
+
+                FetchUrl FetchUrl = new FetchUrl();
+                FetchUrl.execute(url);
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-                mMap.animateCamera(CameraUpdateFactory.zoomTo(18));
-                mMap.addMarker(new MarkerOptions().position(latLng).title("Courier Location").icon(BitmapDescriptorFactory.fromResource(R.drawable.blue_dot)));
+                mMap.animateCamera(CameraUpdateFactory.zoomTo(13));
+                mMap.addMarker(new MarkerOptions().position(latLng).title("Courier Location").icon(BitmapDescriptorFactory.defaultMarker()));
+
+                Location courierLocationLoc=new Location("Courier");
+                courierLocationLoc.setLatitude(courierLocation.latitude);
+                courierLocationLoc.setLongitude(courierLocation.longitude);
+
+                Location clientLocationLoc=new Location("Client");
+                clientLocationLoc.setLatitude(clientLocation.latitude);
+                clientLocationLoc.setLongitude(clientLocation.longitude);
+
+                //calculating distance between courier and eta
+                double distance=(courierLocationLoc.distanceTo(clientLocationLoc))* 0.000621371;
+                double finalDistance1=distance*1.609;
+                NumberFormat format=new DecimalFormat("#0.0");
+                String distanceFormatted=format.format(finalDistance1);
+                double finalDistance=Double.parseDouble(distanceFormatted);
+                double estimatedTimeArrivalInMinutes=finalDistance/10*30;
+
 
                 Double clientLatitude = Double.parseDouble(getIntent().getExtras().getString("Sender Latitude"));
                 Double clientLongitude = Double.parseDouble(getIntent().getExtras().getString("Sender Longitude"));
                 final LatLng clientLocation = new LatLng(clientLatitude, clientLongitude);
                 mMap.addMarker(new MarkerOptions().position(clientLocation).title("Your Requested Location"));
                 mMap.addCircle(new CircleOptions().center(clientLocation).radius(25.0).strokeWidth(3f).strokeColor(Color.CYAN).fillColor(Color.argb(70,0,255,255)));
+
+                AlertDialog alertDialog = new AlertDialog.Builder(courierLocation.this).create();
+                alertDialog.setTitle("Info");
+                alertDialog.setMessage("Distance between these two location is : "+finalDistance +" kilometers "+"ETA= "+estimatedTimeArrivalInMinutes);
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog.show();
             }
+
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -170,7 +224,7 @@ public class courierLocation extends FragmentActivity implements OnMapReadyCallb
             public void onKeyMoved(String key, GeoLocation location) {
                 mMap.clear();
                 LatLng latLng=new LatLng(location.latitude,location.longitude);
-                mMap.addMarker(new MarkerOptions().position(latLng).title("Courier Location").icon(BitmapDescriptorFactory.fromResource(R.drawable.blue_dot)));
+                mMap.addMarker(new MarkerOptions().position(latLng).title("Courier Location").icon(BitmapDescriptorFactory.defaultMarker()));
 
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
                 Double clientLatitude = Double.parseDouble(getIntent().getExtras().getString("Sender Latitude"));
@@ -207,6 +261,112 @@ public class courierLocation extends FragmentActivity implements OnMapReadyCallb
 
 
     }
+
+    private class FetchUrl extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... url) {
+            String data = "";
+
+            try {
+                data = downloadUrl(url[0]);
+                Log.d("Background Task data", data.toString());
+            } catch (Exception e) {
+                Log.d("Background Task", e.toString());
+            }
+            return data;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+
+            ParserTask parserTask = new ParserTask();
+            parserTask.execute(result);
+
+        }
+    }
+
+    private String downloadUrl(String strUrl) throws IOException {
+        String data = "";
+        InputStream iStream = null;
+        HttpURLConnection urlConnection = null;
+        try {
+            URL url = new URL(strUrl);
+            urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.connect();
+            iStream = urlConnection.getInputStream();
+            BufferedReader br = new BufferedReader(new InputStreamReader(iStream));
+            StringBuffer sb = new StringBuffer();
+            String line = "";
+            while ((line = br.readLine()) != null) {
+                sb.append(line);
+            }
+            data = sb.toString();
+            Log.d("downloadUrl", data.toString());
+            br.close();
+        } catch (Exception e) {
+            Log.d("Exception", e.toString());
+        } finally {
+            iStream.close();
+            urlConnection.disconnect();
+        }
+        return data;
+    }
+
+    private class ParserTask extends AsyncTask<String, Integer, List<List<HashMap<String, String>>>> {
+        @Override
+        protected List<List<HashMap<String, String>>> doInBackground(String... jsonData) {
+
+            JSONObject jObject;
+            List<List<HashMap<String, String>>> routes = null;
+
+            try {
+                jObject = new JSONObject(jsonData[0]);
+                Log.d("ParserTask",jsonData[0].toString());
+                JSONParserTask parser = new JSONParserTask();
+                Log.d("ParserTask", parser.toString());
+                routes = parser.parse(jObject);
+                Log.d("ParserTask","Executing routes");
+                Log.d("ParserTask",routes.toString());
+
+            } catch (Exception e) {
+                Log.d("ParserTask",e.toString());
+                e.printStackTrace();
+            }
+            return routes;
+        }
+        @Override
+        protected void onPostExecute(List<List<HashMap<String, String>>> result) {
+            ArrayList<LatLng> points;
+            PolylineOptions lineOptions = null;
+            for (int i = 0; i < result.size(); i++) {
+                points = new ArrayList<>();
+                lineOptions = new PolylineOptions();
+                List<HashMap<String, String>> path = result.get(i);
+                for (int j = 0; j < path.size(); j++) {
+                    HashMap<String, String> point = path.get(j);
+                    double lat = Double.parseDouble(point.get("lat"));
+                    double lng = Double.parseDouble(point.get("lng"));
+                    LatLng position = new LatLng(lat, lng);
+                    points.add(position);
+                }
+                lineOptions.addAll(points);
+                lineOptions.width(10);
+                lineOptions.color(Color.RED);
+
+                Log.d("onPostExecute","onPostExecute lineoptions decoded");
+
+            }
+            if(lineOptions != null) {
+                mMap.addPolyline(lineOptions);
+            }
+            else {
+                Log.d("onPostExecute","without Polylines drawn");
+            }
+        }
+    }
+
 
     private double distance(double lat1, double lng1, double lat2, double lng2) {
 

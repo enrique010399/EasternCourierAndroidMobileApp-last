@@ -49,7 +49,7 @@ public class admin_requests extends AppCompatActivity implements Adapter_admin_r
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
+                list.clear();
                 for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
                     admin_request_item admin_request_item1= dataSnapshot1.getValue(admin_request_item.class);
 
@@ -93,6 +93,7 @@ public class admin_requests extends AppCompatActivity implements Adapter_admin_r
         intent.putExtra("Request Bill",admin_request_item1.getRequestBill());
         intent.putExtra("Request Cash",admin_request_item1.getRequestCash());
         intent.putExtra("Request Change",admin_request_item1.getRequestChange());
+        intent.putExtra("Courier Id",admin_request_item1.getRequestAssignedCourierId());
         if (!admin_request_item1.getRequestFinish().equals("Finish")){
 
         }

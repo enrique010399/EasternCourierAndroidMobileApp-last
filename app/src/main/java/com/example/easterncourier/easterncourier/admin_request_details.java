@@ -18,6 +18,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.os.IBinder;
 import android.os.Looper;
 import android.provider.Settings;
@@ -64,6 +65,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.hbb20.CountryCodePicker;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
@@ -71,6 +75,12 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 
+import org.w3c.dom.Document;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -83,7 +93,7 @@ import butterknife.ButterKnife;
 
 public class admin_request_details extends AppCompatActivity implements courier_enter_requestid_dialog.ExampleDialogListener,courier_enter_payment_dialog.ExampleDialogListener,admin_enter_bill_dialog.ExampleDialogListener {
     TextView requestIdTv, senderNameTv, receiverNameTv, dateRequestedTv, packageDescriptiontv;
-    Button viewPackageImageBtn, viewSenderLocationBtn, viewreceiverLocationBtn, assignCourierBtn, onTheWayBtn, finishDeliveryBtn, payBtn,enterBillBtn,declineBtn,showMyLocationBtn;
+    Button viewPackageImageBtn, viewSenderLocationBtn, viewreceiverLocationBtn, assignCourierBtn, onTheWayBtn, finishDeliveryBtn, payBtn,enterBillBtn,declineBtn,showMyLocationBtn,showCourierLocationBtn;
     String fromCourier;
     public static String tvLongi;
     public static String tvLati;
@@ -126,7 +136,11 @@ public class admin_request_details extends AppCompatActivity implements courier_
     private CountryCodePicker ccp;
     private static final int REQUEST_SMS=0;
     private BroadcastReceiver sentStatusReceiver,deliveredStatusReceiver;
-    public  int bill=0,change,cash;
+    public  int bill=0, change,cash;
+    //public double bill=0;
+
+    private File pdfFile;
+    final private int REQUEST_CODE_ASK_PERMISSIONS = 111;
 
     ArrayList<admin_request_item> list ;
     DatabaseReference reference;
@@ -136,7 +150,7 @@ public class admin_request_details extends AppCompatActivity implements courier_
         setContentView(R.layout.admin_request_details);
         //CheckPermission();
 
-        list = new ArrayList<admin_request_item>();
+
         reference=FirebaseDatabase.getInstance().getReference().child("Client Request");
         requestIdTv = findViewById(R.id.requestIdTv);
         senderNameTv = findViewById(R.id.senderFullNameTv);
@@ -155,13 +169,14 @@ public class admin_request_details extends AppCompatActivity implements courier_
         enterBillBtn=findViewById(R.id.enterBillForTheRequestBtn);
         declineBtn=findViewById(R.id.declineRequestBtn);
         showMyLocationBtn=findViewById(R.id.showMyLocationBtn);
-
+        showCourierLocationBtn=findViewById(R.id.showCourierLocationBtn);
 
 
         Button stopLocationBtn=findViewById(R.id.stopBtn);
 
 
-        bill=Integer.parseInt(getIntent().getExtras().getString("Request Bill"));
+        bill=Integer.parseInt(getIntent().getExtras().getString("Request Bill").toString());
+        //bill=Double.parseDouble(getIntent().getExtras().getString("Request Bill"));
         change=Integer.parseInt(getIntent().getExtras().getString("Request Change"));
         cash=Integer.parseInt(getIntent().getExtras().getString("Request Cash"));
 
@@ -290,10 +305,6 @@ public class admin_request_details extends AppCompatActivity implements courier_
             @Override
             public void onClick(View v) {
 
-                courier_enter_payment_dialog courier_enter_payment_dialog1 = new courier_enter_payment_dialog();
-                //courier_enter_requestid_dialog1.trueRequestId=requestIdTv.getText().toString();
-                //courier_enter_payment_dialog1.billTv.setText(getIntent().getExtras().getString("Request Bill"));
-                courier_enter_payment_dialog1.show(getSupportFragmentManager(), "Cash");
             }
         });
 
@@ -305,10 +316,26 @@ public class admin_request_details extends AppCompatActivity implements courier_
             }
         });
 
-
+        showCourierLocationBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(admin_request_details.this,courierLocation.class);
+                intent.putExtra("Courier Id",getIntent().getExtras().getString("Courier Id"));
+                intent.putExtra("Sender Latitude",getIntent().getExtras().getString("Sender Latitude"));
+                intent.putExtra("Sender Longitude",getIntent().getExtras().getString("Sender Longitude"));
+                startActivity(intent);
+            }
+        });
     }
 
+
+
     private void checkBill(){
+        Intent intent = new Intent(admin_request_details.this, com.example.easterncourier.easterncourier.admin_choose_courier.class);
+        intent.putExtra("Request Id", requestIdTv.getText());
+        intent.putExtra("Receiver Contact Number",getIntent().getExtras().getString("Receiver Contact Number"));
+        startActivity(intent);
+        /*list = new ArrayList<admin_request_item>();
         final Integer[] bill1 = {0};
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -317,27 +344,25 @@ public class admin_request_details extends AppCompatActivity implements courier_
                     admin_request_item admin_request_item1= dataSnapshot1.getValue(admin_request_item.class);
                     if (admin_request_item1.requestId.equals(getIntent().getExtras().getString("Request Bill"))){
                         bill1[0] =Integer.parseInt(admin_request_item1.getRequestBill());
-
                     }
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
-        //if (bill1[0] !=0){
+        });*/
+        /*if (bill1[0] !=0){
             Intent intent = new Intent(admin_request_details.this, com.example.easterncourier.easterncourier.admin_choose_courier.class);
             intent.putExtra("Request Id", requestIdTv.getText());
             intent.putExtra("Receiver Contact Number",getIntent().getExtras().getString("Receiver Contact Number"));
             startActivity(intent);
-        //}
-        //else{
-            //AlertDialog.Builder builder=new AlertDialog.Builder(admin_request_details.this);
-            //builder.setMessage("You must enter the bill of the service first!!").setNegativeButton("Retry",null)
-                    //.create().show();
-        //}
+        }
+        else{
+            AlertDialog.Builder builder=new AlertDialog.Builder(admin_request_details.this);
+            builder.setMessage("You must enter the bill of the service first!!").setNegativeButton("Retry",null)
+                    .create().show();
+        }*/
 
 
     }
@@ -408,15 +433,12 @@ public class admin_request_details extends AppCompatActivity implements courier_
 
     private void updateLocationUI() {
         if (mCurrentLocation != null) {
-
             //latitude.setText("Latitude: " + mCurrentLocation.getLatitude());
             //longitude.setText("Longitude: " + mCurrentLocation.getLongitude());
             Toast.makeText(admin_request_details.this,mCurrentLocation.getLatitude()+"",Toast.LENGTH_LONG).show();
             DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference("Courier Accounts Location");
             GeoFire geoFire= new GeoFire(databaseReference);
             geoFire.setLocation(getIntent().getExtras().getString("Courier Id"),new GeoLocation(mCurrentLocation.getLatitude(),mCurrentLocation.getLongitude()));
-
-
         }
 
         toggleButtons();
@@ -634,20 +656,11 @@ public class admin_request_details extends AppCompatActivity implements courier_
             AlertDialog.Builder builder = new AlertDialog.Builder(admin_request_details.this);
             builder.setMessage("The request Id is correct")
                     .create().show();
-            final DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference("Client Request").child(requestIdTv.getText().toString());
-            databaseReference1.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                        databaseReference1.child("requestFinish").setValue("Finished");
-                    }
-                }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
+            courier_enter_payment_dialog courier_enter_payment_dialog1 = new courier_enter_payment_dialog();
+            courier_enter_payment_dialog1.show(getSupportFragmentManager(), "Cash");
 
-                }
-            });
+
         } else {
             AlertDialog.Builder builder = new AlertDialog.Builder(admin_request_details.this);
             builder.setMessage("The request Id is wrong please try again")
@@ -710,9 +723,33 @@ public class admin_request_details extends AppCompatActivity implements courier_
                         }
                     }
                 }
+
                 break;
+
             default:
                 super.onRequestPermissionsResult(requestCode,permissions,grantResults);
+        }
+
+        switch (requestCode) {
+            case REQUEST_CODE_ASK_PERMISSIONS:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission Granted
+                    try {
+                        createPdfWrapper();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    catch(DocumentException e){
+                        e.printStackTrace();
+                    }
+                } else {
+                    // Permission Denied
+                    Toast.makeText(this, "WRITE_EXTERNAL Permission Denied", Toast.LENGTH_SHORT)
+                            .show();
+                }
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 
@@ -727,10 +764,24 @@ public class admin_request_details extends AppCompatActivity implements courier_
         if (bill<=cash){
             change=cash-bill;
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(admin_request_details.this);
-            builder.setMessage("Request Paid Sucessfully,, Your Change is "+change.toString())
-                    .create().show();
             final DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference("Client Request").child(requestIdTv.getText().toString());
+            databaseReference1.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                        databaseReference1.child("requestFinish").setValue("Finished");
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+
+
+
             databaseReference1.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -745,12 +796,96 @@ public class admin_request_details extends AppCompatActivity implements courier_
 
                 }
             });
+            AlertDialog.Builder builder = new AlertDialog.Builder(admin_request_details.this);
+            builder.setMessage("Request Paid Sucessfully,, Your Change is "+change.toString())
+                    .create().show();
+
+            try {
+                createPdfWrapper();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch(DocumentException e){
+
+            }
         }
         else{
             Toast.makeText(admin_request_details.this, "Insufficient Payment!!!", Toast.LENGTH_SHORT).show();
         }
 
 
+    }
+    private void createPdfWrapper() throws FileNotFoundException,DocumentException{
+
+        int hasWriteStoragePermission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (hasWriteStoragePermission != PackageManager.PERMISSION_GRANTED) {
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (!shouldShowRequestPermissionRationale(Manifest.permission.WRITE_CONTACTS)) {
+                    showMessageOKCancel("You need to allow access to Storage",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                        requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                                REQUEST_CODE_ASK_PERMISSIONS);
+                                    }
+                                }
+                            });
+                    return;
+                }
+
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        REQUEST_CODE_ASK_PERMISSIONS);
+            }
+            return;
+        }else {
+            createPdf();
+        }
+    }
+
+    private void createPdf() throws FileNotFoundException, DocumentException {
+
+        File docsFolder = new File(Environment.getExternalStorageDirectory() + "/Documents");
+        if (!docsFolder.exists()) {
+            docsFolder.mkdir();
+            Log.i(TAG, "Created a new directory for PDF");
+        }
+
+
+        pdfFile = new File(docsFolder.getAbsolutePath(),"HelloWorld.pdf");
+        OutputStream output = new FileOutputStream(pdfFile);
+        com.itextpdf.text.Document document=new com.itextpdf.text.Document();
+        PdfWriter.getInstance(document, output);
+        document.open();
+        document.add(new Paragraph("Request Date: "+getIntent().getExtras().getString("Client Date Requested")
+        +"\n"+"Sender: "+getIntent().getExtras().getString("Sender Name")
+        +"\n"+"Receiver: "+getIntent().getExtras().getString("Receiver Name")
+        +"\n"+"Delivered By: "+getIntent().getExtras().getString("Courier Name")
+        +"\n"+"Package Description: "+getIntent().getExtras().getString("Package Description")
+        +"\n"+"Package Weight: "+"10kg"
+        +"\n"+"Service Fee: "+getIntent().getExtras().getString("Request Bill")));
+
+        document.close();
+        previewPdf();
+
+    }
+
+    private void previewPdf() {
+
+        PackageManager packageManager = getPackageManager();
+        Intent testIntent = new Intent(Intent.ACTION_VIEW);
+        testIntent.setType("application/pdf");
+        List list = packageManager.queryIntentActivities(testIntent, PackageManager.MATCH_DEFAULT_ONLY);
+        if (list.size() > 0) {
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_VIEW);
+            Uri uri = Uri.fromFile(pdfFile);
+            intent.setDataAndType(uri, "application/pdf");
+
+            startActivity(intent);
+        }else{
+            Toast.makeText(this,"Download a PDF Viewer to see the generated PDF",Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

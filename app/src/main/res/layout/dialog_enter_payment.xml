@@ -26,7 +26,7 @@
         android:textColorHint="@color/colorWhite" />
 
     <TextView
-        android:id="@+id/billTv"
+        android:id="@+id/billTvDialog"
         android:layout_width="380dp"
         android:layout_height="40dp"
         android:layout_alignParentTop="true"

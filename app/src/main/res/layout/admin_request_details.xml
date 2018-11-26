@@ -267,4 +267,20 @@
         app:layout_constraintEnd_toStartOf="@+id/enterBillForTheRequestBtn"
         app:layout_constraintTop_toBottomOf="@+id/packageDescTv" />
 
+    <Button
+        android:id="@+id/showCourierLocationBtn"
+        android:layout_width="86dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="58dp"
+        android:layout_marginEnd="37dp"
+        android:layout_marginStart="11dp"
+        android:layout_marginTop="9dp"
+        android:text="Show Courier Location"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/finishDeliveryBtn"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/nshowPackageImageBtn"
+        app:layout_constraintTop_toBottomOf="@+id/showMyLocationBtn"
+        app:layout_constraintVertical_bias="0.0" />
+
 </android.support.constraint.ConstraintLayout>

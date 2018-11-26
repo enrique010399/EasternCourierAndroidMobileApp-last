@@ -52,6 +52,7 @@ public class admin_couriers extends AppCompatActivity implements Adapter_admin_c
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                list.clear();
                 for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
                     admin_couriers_item admin_couriers_item1= dataSnapshot1.getValue(admin_couriers_item.class);
                     list.add(admin_couriers_item1);

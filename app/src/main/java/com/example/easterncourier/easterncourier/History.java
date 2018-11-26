@@ -41,10 +41,9 @@ public class History extends AppCompatActivity implements Adapter_courier_client
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
+                list.clear();
                 //admin_request_item admin_request_item2=new admin_request_item();
                 for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
-
                     //Toast.makeText(courier_client_request.this,admin_request_item2.getRequestId(),Toast.LENGTH_LONG);
                     if (dataSnapshot1.getValue(admin_request_item.class).getClientUserName().equals(getIntent().getExtras().getString("username"))){
                         admin_request_item admin_request_item1= dataSnapshot1.getValue(admin_request_item.class);

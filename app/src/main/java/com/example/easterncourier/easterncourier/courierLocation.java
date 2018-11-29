@@ -354,7 +354,6 @@ public class courierLocation extends FragmentActivity implements OnMapReadyCallb
                 lineOptions.addAll(points);
                 lineOptions.width(10);
                 lineOptions.color(Color.RED);
-
                 Log.d("onPostExecute","onPostExecute lineoptions decoded");
 
             }

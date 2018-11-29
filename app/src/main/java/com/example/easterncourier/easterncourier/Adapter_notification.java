@@ -38,14 +38,13 @@ public class Adapter_notification extends RecyclerView.Adapter<Adapter_notificat
     @Override
     public void onBindViewHolder(@NonNull myViewHolder holder, int position) {
         holder.notificationReceiverName.setText("Your book request for "+clientNotification.get(position).getReceiverName().toString()+" just accepted!!");
-
+        holder.notificationTimeAdminApprove.setText(clientNotification.get(position).getClientDateRequested().toString());
     }
 
     @Override
     public int getItemCount() {
         return clientNotification.size();
     }
-
     public class myViewHolder extends RecyclerView.ViewHolder{
 
         TextView notificationReceiverName,notificationTimeAdminApprove;

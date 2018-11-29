@@ -202,11 +202,17 @@ public class Book extends AppCompatActivity implements LocationListener {
             }
         });
 
+
+
         submitRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Boolean isAPhoneNumber=false;
+                int phoneNumberLength=receiverContactNumber.getText().length();
+                //int length=String.valueOf();
+                //if (receiverContactNumber)
                 if (!TextUtils.isEmpty(receiverName.getText().toString()) && !TextUtils.isEmpty(dropingPointLocation.getText()
-                .toString()) && !TextUtils.isEmpty(packageDescription.getText().toString())){
+                .toString()) && !TextUtils.isEmpty(packageDescription.getText().toString()) && phoneNumberLength==10){
 
                     uploadFile();
                     SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
@@ -228,11 +234,13 @@ public class Book extends AppCompatActivity implements LocationListener {
 
                 }
                 else{
-                    Toast.makeText(Book.this,"Please fill up all fields!!!",Toast.LENGTH_LONG).show();
+                    Toast.makeText(Book.this,"Please fill up all fields Correctly!!!",Toast.LENGTH_LONG).show();
                 }
             }
         });
     }
+
+
 
     private String getFilextension(Uri uri){
         ContentResolver cR= getContentResolver();

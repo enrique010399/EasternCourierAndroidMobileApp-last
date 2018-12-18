@@ -20,13 +20,17 @@ public class admin_request_item {
     String requestBill;
     String requestChange;
     String requestCash;
+    String requestTransactionDate;
+    String requestSenderContactNumber;
+    String requestETA;
+    String requestDecline;
 
 
     public admin_request_item(){
 
     }
 
-    public admin_request_item(String requestId, String senderLocationLatitude, String senderLocationLongitude, String receiverLocationLatitude, String receiverLocationLongitude, String receiverName, String requestDescription, String clientUserName, String clientFullName, String clientDateRequested, String clientPackageImage, String requestAssignedCourierId, String requestAssignedCourierUserName, String requestAssignedCourierFullName, String requestFinish, String receiverContactNumber, String requestBill, String requestChange, String requestCash) {
+    public admin_request_item(String requestId, String senderLocationLatitude, String senderLocationLongitude, String receiverLocationLatitude, String receiverLocationLongitude, String receiverName, String requestDescription, String clientUserName, String clientFullName, String clientDateRequested, String clientPackageImage, String requestAssignedCourierId, String requestAssignedCourierUserName, String requestAssignedCourierFullName, String requestFinish, String receiverContactNumber, String requestBill, String requestChange, String requestCash, String requestTransactionDate, String requestSenderContactNumber, String requestETA, String requestDecline) {
         this.requestId = requestId;
         this.senderLocationLatitude = senderLocationLatitude;
         this.senderLocationLongitude = senderLocationLongitude;
@@ -46,6 +50,10 @@ public class admin_request_item {
         this.requestBill = requestBill;
         this.requestChange = requestChange;
         this.requestCash = requestCash;
+        this.requestTransactionDate = requestTransactionDate;
+        this.requestSenderContactNumber = requestSenderContactNumber;
+        this.requestETA = requestETA;
+        this.requestDecline = requestDecline;
     }
 
     public String getRequestId() {
@@ -198,5 +206,37 @@ public class admin_request_item {
 
     public void setRequestCash(String requestCash) {
         this.requestCash = requestCash;
+    }
+
+    public String getRequestTransactionDate() {
+        return requestTransactionDate;
+    }
+
+    public void setRequestTransactionDate(String requestTransactionDate) {
+        this.requestTransactionDate = requestTransactionDate;
+    }
+
+    public String getRequestSenderContactNumber() {
+        return requestSenderContactNumber;
+    }
+
+    public void setRequestSenderContactNumber(String requestSenderContactNumber) {
+        this.requestSenderContactNumber = requestSenderContactNumber;
+    }
+
+    public String getRequestETA() {
+        return requestETA;
+    }
+
+    public void setRequestETA(String requestETA) {
+        this.requestETA = requestETA;
+    }
+
+    public String getRequestDecline() {
+        return requestDecline;
+    }
+
+    public void setRequestDecline(String requestDecline) {
+        this.requestDecline = requestDecline;
     }
 }

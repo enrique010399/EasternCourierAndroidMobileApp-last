@@ -47,7 +47,9 @@ public class Adapter_courier_client_request extends RecyclerView.Adapter<Adapter
         //myViewHolder.courierFullName.setText(FullName);
         //myViewHolder.courierUserName.setText(chooseCourier.get(i).getCourierUserName());
 
-        holder.clientFullName.setText(courierClientRequest.get(position).getClientFullName().toString());
+        holder.clientFullName.setText(courierClientRequest.get(position).getClientFullName().toString()+" requested to send package" +
+                "\n"+" for "+courierClientRequest.get(position).getReceiverName());
+
         holder.clientTimeRequested.setText(courierClientRequest.get(position).getClientDateRequested().toString());
     }
 

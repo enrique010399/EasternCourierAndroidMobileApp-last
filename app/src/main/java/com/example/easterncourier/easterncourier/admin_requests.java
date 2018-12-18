@@ -1,8 +1,11 @@
 package com.example.easterncourier.easterncourier;
 
+import android.app.Notification;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -35,12 +38,12 @@ public class admin_requests extends AppCompatActivity implements Adapter_admin_r
 
 
     Adapter_admin_requests adapter_admin_requests;
-
+    public static NotificationManagerCompat notificationManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_requests);
-
+        notificationManager= NotificationManagerCompat.from(this);
         recyclerView=(RecyclerView) findViewById(R.id.rv_listRequests);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -53,7 +56,16 @@ public class admin_requests extends AppCompatActivity implements Adapter_admin_r
                 for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
                     admin_request_item admin_request_item1= dataSnapshot1.getValue(admin_request_item.class);
 
-                    if (!admin_request_item1.getRequestFinish().equals("Finished")){
+                    if (!admin_request_item1.getRequestFinish().equals("Finished") && admin_request_item1.getRequestAssignedCourierId().equals("Not Assign")
+                            && !admin_request_item1.getRequestDecline().equals("Yes")){
+
+                        Notification notification=new NotificationCompat.Builder(admin_requests.this,App.CHANNEL_1_ID)
+                                .setSmallIcon(R.mipmap.ic_launcher_round)
+                                .setContentTitle("Client Request")
+                                .setContentText("There is/are  pending request or new Client Request ....")
+                                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                                .setCategory(NotificationCompat.CATEGORY_MESSAGE).build();
+                        notificationManager.notify(1,notification);
                         list.add(admin_request_item1);
                     }
                 }
@@ -94,6 +106,12 @@ public class admin_requests extends AppCompatActivity implements Adapter_admin_r
         intent.putExtra("Request Cash",admin_request_item1.getRequestCash());
         intent.putExtra("Request Change",admin_request_item1.getRequestChange());
         intent.putExtra("Courier Id",admin_request_item1.getRequestAssignedCourierId());
+        intent.putExtra("Receiver Number",admin_request_item1.getReceiverContactNumber());
+        intent.putExtra("Sender Number",admin_request_item1.getRequestSenderContactNumber());
+
+
+
+        Toast.makeText(this,admin_request_item1.getReceiverContactNumber(),Toast.LENGTH_LONG);
         if (!admin_request_item1.getRequestFinish().equals("Finish")){
 
         }

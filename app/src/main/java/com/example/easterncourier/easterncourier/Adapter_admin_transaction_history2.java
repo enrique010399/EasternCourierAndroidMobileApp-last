@@ -6,13 +6,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
 
-public class Adapter_admin_transaction_history extends RecyclerView.Adapter<Adapter_admin_transaction_history.myViewHolder> {
-
+public class Adapter_admin_transaction_history2 extends RecyclerView.Adapter<Adapter_admin_transaction_history2.myViewHolder>{
     Context mContextAdminTransactionHistory;
     List<admin_request_item> mDataAdminTransactionHistory;
 
@@ -27,7 +25,7 @@ public class Adapter_admin_transaction_history extends RecyclerView.Adapter<Adap
         mListener=listener;
     }
 
-    public Adapter_admin_transaction_history(Context mContextAdminTransactionHistory, List<admin_request_item> mDataAdminTransactionHistory) {
+    public Adapter_admin_transaction_history2(Context mContextAdminTransactionHistory, List<admin_request_item> mDataAdminTransactionHistory) {
         this.mContextAdminTransactionHistory = mContextAdminTransactionHistory;
         this.mDataAdminTransactionHistory = mDataAdminTransactionHistory;
     }
@@ -42,7 +40,7 @@ public class Adapter_admin_transaction_history extends RecyclerView.Adapter<Adap
     @Override
     public void onBindViewHolder(@NonNull myViewHolder holder, int position) {
         //holder.transactionHistoryClientImage.setImageResource(mDataAdminTransactionHistory.get(position).getTransactionHistoryImage());
-        holder.transactionFullName.setText(mDataAdminTransactionHistory.get(position).getClientFullName());
+        holder.transactionFullName.setText(mDataAdminTransactionHistory.get(position).getRequestAssignedCourierFullName());
         holder.transactionDate.setText(mDataAdminTransactionHistory.get(position).getRequestTransactionDate());
         holder.transactionRequestId.setText(mDataAdminTransactionHistory.get(position).getRequestId());
 
@@ -78,5 +76,4 @@ public class Adapter_admin_transaction_history extends RecyclerView.Adapter<Adap
             });
         }
     }
-
 }

@@ -4,283 +4,340 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".admin_request_details">
+    tools:context=".admin_request_details"
+    android:background="@color/colorBackGroundCard">
 
-    <TextView
-        android:id="@+id/dateRequestedTv"
-        android:layout_width="158dp"
+
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="52dp"
-        android:text="date requested"
-        android:textColor="@color/colorWhite"
-        android:textSize="17sp"
-        app:layout_constraintStart_toEndOf="@+id/textView13"
-        app:layout_constraintTop_toBottomOf="@+id/senderFullNameTv" />
-
-    <TextView
-        android:id="@+id/textView18"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="15dp"
-        android:text="Date Requested :"
-        android:textColor="@color/colorWhite"
-        android:textSize="17sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView13" />
-
-    <Button
-        android:id="@+id/nshowPackageImageBtn"
-        android:layout_width="163dp"
-        android:layout_height="58dp"
-        android:layout_marginBottom="20dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/signin_btn"
-        android:text="Package Image"
-        android:textAllCaps="false"
-        android:textColor="@color/colorWhite"
-        android:textSize="15sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal"
+        android:padding="3dp"
+        app:layout_constraintBottom_toTopOf="@+id/cardView3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/packageDescTv"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <Button
-        android:id="@+id/showReceiverLocationBtn"
-        android:layout_width="163dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/signin_btn"
-        android:text="Receiver Location"
-        android:textAllCaps="false"
-        android:textColor="@color/colorWhite"
-        android:textSize="15sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/showSenderLocationBtn" />
+        <ImageView
+            android:id="@+id/backbutton"
+            android:layout_width="52dp"
+            android:layout_height="48dp"
+            android:src="@drawable/arrow" />
 
-    <TextView
-        android:id="@+id/packageDescTv"
-        android:layout_width="354dp"
-        android:layout_height="192dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:background="@color/colorWhite"
-        android:padding="10dp"
-        android:text="Package Description"
-        android:textColor="@color/colorBackGround"
-        android:textSize="17sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView16" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
 
-    <TextView
-        android:id="@+id/textView16"
-        android:layout_width="187dp"
-        android:layout_height="23dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="80dp"
-        android:text="Package Description :"
-        android:textColor="@color/colorWhite"
-        android:textSize="17sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView13" />
+            android:paddingTop="5dp"
+            android:text="Request Details"
+            android:textColor="@color/colorWhite"
+            android:textSize="25sp"
+            android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/receiverNameTv"
-        android:layout_width="158dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="17dp"
-        android:text="Receiver Name"
-        android:textColor="@color/colorWhite"
-        android:textSize="17sp"
-        app:layout_constraintStart_toEndOf="@+id/textView13"
-        app:layout_constraintTop_toBottomOf="@+id/senderFullNameTv" />
 
-    <TextView
-        android:id="@+id/textView13"
-        android:layout_width="136dp"
-        android:layout_height="23dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="15dp"
-        android:text="Receiver Name :"
-        android:textColor="@color/colorWhite"
-        android:textSize="17sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView11" />
+    </LinearLayout>
 
-    <TextView
-        android:id="@+id/senderFullNameTv"
-        android:layout_width="158dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="17dp"
-        android:text="Sender Full Name :"
-        android:textColor="@color/colorWhite"
-        android:textSize="17sp"
-        app:layout_constraintStart_toEndOf="@+id/textView11"
-        app:layout_constraintTop_toBottomOf="@+id/requestIdTv" />
-
-    <TextView
-        android:id="@+id/textView11"
-        android:layout_width="125dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="15dp"
-        android:text="Sender Name :"
-        android:textColor="@color/colorWhite"
-        android:textSize="17sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
-
-    <TextView
-        android:id="@+id/requestIdTv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="32dp"
-        android:text="Request Id :"
-        android:textAlignment="center"
-        android:textColor="@color/colorWhite"
-        android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/textView4"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="32dp"
-        android:text="Request Id :"
-        android:textColor="@color/colorWhite"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/showSenderLocationBtn"
-        android:layout_width="155dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="44dp"
-        android:background="@drawable/signin_btn"
-        android:text="Sender Location"
-        android:textAllCaps="false"
-        android:textColor="@color/colorWhite"
-        android:textSize="15sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/packageDescTv" />
-
-    <Button
-        android:id="@+id/assignCourierBtn"
-        android:layout_width="81dp"
-        android:layout_height="51dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Assign Courier"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/onTheWayBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="Start"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/assignCourierBtn" />
-
-    <Button
-        android:id="@+id/finishDeliveryBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginBottom="4dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Finish"
+        android:layout_marginEnd="4dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="55dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/nshowPackageImageBtn"
-        app:layout_constraintTop_toBottomOf="@+id/packageDescTv"
-        app:layout_constraintVertical_bias="0.925" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintVertical_bias="1.0">
 
-    <Button
-        android:id="@+id/payBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Pay"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/stopBtn" />
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/cardView31"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="2dp"
+            android:layout_marginEnd="2dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="2dp"
+            android:background="@color/colorBackGround"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0">
 
-    <Button
-        android:id="@+id/stopBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Stop"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/onTheWayBtn" />
 
-    <Button
-        android:id="@+id/enterBillForTheRequestBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="44dp"
-        android:text="Enter Bill"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/packageDescTv" />
+            <TextView
+                android:id="@+id/dateRequestedTv"
+                android:layout_width="165dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="2018/10/29 8:30pm"
+                android:textColor="@color/colorWhite"
+                android:textSize="17sp"
+                app:layout_constraintStart_toEndOf="@+id/textView13"
+                app:layout_constraintTop_toBottomOf="@+id/receiverNameTv" />
 
-    <Button
-        android:id="@+id/declineRequestBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Decline"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/enterBillForTheRequestBtn" />
+            <TextView
+                android:id="@+id/textView18"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="2dp"
+                android:text="Date Requested :"
+                android:textColor="@color/colorPrimary"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
-    <Button
-        android:id="@+id/showMyLocationBtn"
-        android:layout_width="103dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="12dp"
-        android:layout_marginTop="52dp"
-        android:text="Show My Location"
-        app:layout_constraintEnd_toStartOf="@+id/enterBillForTheRequestBtn"
-        app:layout_constraintTop_toBottomOf="@+id/packageDescTv" />
+            <Button
+                android:id="@+id/onTheWayBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/blackbutton"
+                android:text="Start"
+                android:textAllCaps="false"
+                android:textColor="@color/colorWhite"
+                android:textSize="15sp"
+                app:layout_constraintStart_toEndOf="@+id/stopBtn"
+                app:layout_constraintTop_toBottomOf="@+id/dateRequestedTv" />
 
-    <Button
-        android:id="@+id/showCourierLocationBtn"
-        android:layout_width="86dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="58dp"
-        android:layout_marginEnd="37dp"
-        android:layout_marginStart="11dp"
-        android:layout_marginTop="9dp"
-        android:text="Show Courier Location"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/finishDeliveryBtn"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/nshowPackageImageBtn"
-        app:layout_constraintTop_toBottomOf="@+id/showMyLocationBtn"
-        app:layout_constraintVertical_bias="0.0" />
+            <Button
+                android:id="@+id/stopBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/blackbutton"
+                android:text="Stop"
+                android:textAllCaps="false"
+                android:textColor="@color/colorWhite"
+                app:layout_constraintEnd_toStartOf="@+id/onTheWayBtn"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dateRequestedTv" />
+
+            <Button
+                android:id="@+id/assignCourierBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/blackbutton"
+                android:text="Assign Courier"
+                android:textAllCaps="false"
+                android:textColor="@color/colorWhite"
+                android:textSize="15sp"
+                app:layout_constraintStart_toEndOf="@+id/onTheWayBtn"
+                app:layout_constraintTop_toBottomOf="@+id/dateRequestedTv" />
+
+
+            <Button
+                android:id="@+id/showReceiverLocationBtn"
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/signin_btn"
+                android:text="Receiver Location"
+                android:textAllCaps="false"
+                android:textColor="@color/colorWhite"
+                android:textSize="15sp"
+                app:layout_constraintStart_toEndOf="@+id/showSenderLocationBtn"
+                app:layout_constraintTop_toBottomOf="@+id/packageDescTv" />
+
+            <TextView
+                android:id="@+id/packageDescTv"
+                android:layout_width="match_parent"
+                android:layout_height="119dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:background="@color/colorContainer"
+                android:drawableLeft="@drawable/ic_description_black_24dp"
+                android:drawablePadding="1dp"
+                android:drawableTint="@color/colorPrimary"
+                android:hint="Package Description"
+                android:padding="10dp"
+                android:textColor="@color/colorWhite"
+                android:textColorHint="@color/colorPrimary"
+                android:textSize="18sp"
+                android:textStyle="italic"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.444"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView16" />
+
+            <TextView
+                android:id="@+id/textView16"
+                android:layout_width="187dp"
+                android:layout_height="28dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="Package Description :"
+                android:textColor="@color/colorPrimary"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/assignCourierBtn" />
+
+            <TextView
+                android:id="@+id/receiverNameTv"
+                android:layout_width="165dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="Erish John Carpio"
+                android:textColor="@color/colorWhite"
+                android:textSize="17sp"
+                app:layout_constraintStart_toEndOf="@+id/textView13"
+                app:layout_constraintTop_toBottomOf="@+id/senderFullNameTv" />
+
+            <TextView
+                android:id="@+id/textView13"
+                android:layout_width="136dp"
+                android:layout_height="27dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="2dp"
+                android:text="Receiver Name :"
+                android:textColor="@color/colorPrimary"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView11" />
+
+            <TextView
+                android:id="@+id/senderFullNameTv"
+                android:layout_width="165dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="4dp"
+                android:text="Ka Nano"
+                android:textColor="@color/colorWhite"
+                android:textSize="17sp"
+                app:layout_constraintStart_toEndOf="@+id/textView11"
+                app:layout_constraintTop_toBottomOf="@+id/requestIdTv" />
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="125dp"
+                android:layout_height="26dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="2dp"
+                android:text="Sender Name :"
+                android:textColor="@color/colorPrimary"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+            <TextView
+                android:id="@+id/requestIdTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="2015-168383"
+                android:textAlignment="center"
+                android:textColor="@color/colorWhite"
+                android:textSize="18sp"
+                app:layout_constraintStart_toEndOf="@+id/textView4"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:text="Request Id :"
+                android:textColor="@color/colorPrimary"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/showSenderLocationBtn"
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="56dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/signin_btn"
+                android:text="Sender Location"
+                android:textAllCaps="false"
+                android:textColor="@color/colorWhite"
+                android:textSize="15sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/packageDescTv" />
+
+
+            <Button
+                android:id="@+id/showCourierLocationBtn"
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="56dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/signin_btn"
+                android:text="Show Courier Location"
+                android:textAllCaps="false"
+                android:textColor="@color/colorWhite"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/showSenderLocationBtn" />
+
+            <Button
+                android:id="@+id/declineRequestBtn"
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/signin_btn"
+                android:text="Decline"
+                android:textAllCaps="false"
+                android:textColor="@color/colorWhite"
+                app:layout_constraintEnd_toStartOf="@+id/finishDeliveryBtn"
+                app:layout_constraintStart_toEndOf="@+id/showCourierLocationBtn"
+                app:layout_constraintTop_toBottomOf="@+id/showReceiverLocationBtn" />
+
+            <Button
+                android:id="@+id/finishDeliveryBtn"
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="72dp"
+                android:background="@drawable/signin_btn"
+                android:text="Finish"
+                android:textAllCaps="false"
+                android:textColor="@color/colorWhite"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/packageDescTv" />
+
+            <Button
+                android:id="@+id/transactiondetailsBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginStart="20dp"
+                android:background="@drawable/signin_btn"
+                android:text="Transaction Details"
+                android:textAllCaps="false"
+                android:textColor="@color/colorWhite"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/declineRequestBtn" />
+
+
+        </android.support.constraint.ConstraintLayout>
+
+    </android.support.constraint.ConstraintLayout>
 
 </android.support.constraint.ConstraintLayout>

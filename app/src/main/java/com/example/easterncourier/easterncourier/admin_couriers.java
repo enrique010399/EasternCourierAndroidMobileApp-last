@@ -36,10 +36,8 @@ public class admin_couriers extends AppCompatActivity implements Adapter_admin_c
         addCourierAccountBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Intent intent=new Intent(admin_couriers.this,addCourierAccount.class);
                 startActivity(intent);
-
             }
         });
 

@@ -6,11 +6,10 @@
     android:layout_height="match_parent"
     tools:context=".admin_couriers">
 
-
     <LinearLayout
-        android:id="@+id/linearLayoutAccount"
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="62dp"
+        android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         android:orientation="horizontal"
         android:padding="3dp"
@@ -19,37 +18,50 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <Button
-            android:id="@+id/addNewAccount"
-            android:layout_width="120dp"
-            android:layout_height="45dp"
-            android:layout_marginLeft="280dp"
-            android:layout_marginTop="3dp"
-            android:background="@drawable/signup_btn"
-            android:drawableLeft="@drawable/compose_30px"
-            android:drawablePadding="1dp"
-            android:text="Add"
-            android:textAlignment="center"
-            android:textAllCaps="false"
+        <ImageView
+            android:id="@+id/backbutton"
+            android:layout_width="56dp"
+            android:layout_height="52dp"
+            android:src="@drawable/arrow" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingTop="5dp"
+            android:text="Admin Couriers"
             android:textColor="@color/colorWhite"
-            android:textSize="13sp" />
+            android:textSize="25sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 
+    <Button
 
+        android:id="@+id/addNewAccount"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/book_btn"
+        android:drawableLeft="@drawable/add_clients"
+        android:drawablePadding="1dp"
+        android:drawableTint="@color/colorPrimary"
+        android:text="Add New Courier"
+        android:textColor="#fff"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_Couriers"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginBottom="2dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="3dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="130dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayoutAccount" />
-
+        app:layout_constraintTop_toBottomOf="@+id/addNewAccount" />
 
 </android.support.constraint.ConstraintLayout>

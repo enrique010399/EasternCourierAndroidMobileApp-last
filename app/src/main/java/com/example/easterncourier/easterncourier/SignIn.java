@@ -236,6 +236,9 @@ public class SignIn extends AppCompatActivity implements sigin_enter_verificatio
                                     dataSnapshot1.getValue(com.example.easterncourier.easterncourier.registerClientRequest.class).getAccountAddressCity()+" "+
                                     dataSnapshot1.getValue(com.example.easterncourier.easterncourier.registerClientRequest.class).getAccountAddressProvince());
 
+                            //intent.putExtra("senderContactNumber",dataSnapshot1.getValue(com.example.easterncourier.easterncourier.registerClientRequest.class).getAccountMobileNumber());
+
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             contactNumber=dataSnapshot1.getValue(com.example.easterncourier.easterncourier.registerClientRequest.class).getAccountMobileNumber();
                             startActivity(intent);
                             //correct="Yes";

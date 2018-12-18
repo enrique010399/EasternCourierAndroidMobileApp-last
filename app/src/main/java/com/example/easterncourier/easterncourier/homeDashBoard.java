@@ -2,6 +2,7 @@ package com.example.easterncourier.easterncourier;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -9,6 +10,10 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 public class homeDashBoard extends AppCompatActivity implements View.OnClickListener{
     private CardView cardViewBook,cardViewProfile,cardViewNotification,cardViewMessages,cardViewHistory;
@@ -33,7 +38,7 @@ public class homeDashBoard extends AppCompatActivity implements View.OnClickList
             clientPhoneNumber=getIntent().getExtras().getString("accountPhoneNumber");
             clientBirthDate=getIntent().getExtras().getString("accountBirthday");
             clientAddress=getIntent().getExtras().getString("accountAddress");
-            Toast.makeText(this,clientBirthDate,Toast.LENGTH_LONG).show();
+            //Toast.makeText(this,clientBirthDate,Toast.LENGTH_LONG).show();
         }
 
         cardViewBook=(CardView) findViewById(R.id.cardViewBook);

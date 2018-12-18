@@ -16,17 +16,21 @@
         android:background="@color/colorPrimary"
         android:orientation="horizontal"
         android:padding="3dp"
-        app:layout_constraintBottom_toTopOf="@+id/cardView3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/backbutton"
+            android:layout_width="52dp"
+            android:layout_height="48dp"
+            android:src="@drawable/arrow" />
+
         <TextView
-            android:layout_width="273dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
-            android:drawableLeft="@drawable/arrow"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
             android:paddingTop="5dp"
             android:text="Book"
             android:textColor="@color/colorWhite"
@@ -39,179 +43,167 @@
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/cardView3"
-        android:layout_width="391dp"
-        android:layout_height="581dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="2dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="55dp"
         android:background="@color/colorBackGround"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        app:layout_constraintVertical_bias="0.25">
+        app:layout_constraintVertical_bias="0.362">
 
-        <EditText
-            android:id="@+id/receiverContactNumberEditText"
-            android:layout_width="272dp"
-            android:layout_height="50dp"
 
-            android:layout_marginTop="12dp"
-            android:drawableLeft="@drawable/add_clients26dp"
-            android:drawablePadding="1dp"
-            android:drawableTint="@color/colorPrimary"
-            android:ems="10"
-            android:hint="Receiver Contact Number"
-            android:inputType="phone"
-            android:textAlignment="center"
-            android:textColor="@color/colorPrimary"
-            android:textColorHint="@color/colorPrimary"
-            android:textSize="16sp"
-            app:layout_constraintStart_toEndOf="@+id/textView21"
-            app:layout_constraintTop_toBottomOf="@+id/receiverNameEditText" />
-
-        <EditText
-            android:id="@+id/receiverNameEditText"
+        <LinearLayout
+            android:id="@+id/linearLayout24"
             android:layout_width="0dp"
-            android:layout_height="50dp"
-
-            android:layout_marginEnd="7dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="20dp"
-            android:drawableLeft="@drawable/add_clients26dp"
-            android:drawablePadding="1dp"
-            android:drawableTint="@color/colorPrimary"
-            android:ems="10"
-            android:hint="Receiver Name (First Name and Last Name)"
-            android:inputType="textPersonName"
-            android:textAlignment="center"
-            android:textColor="@color/colorPrimary"
-            android:textColorHint="@color/colorPrimary"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/getDropingPointLocation" />
-
-        <Button
-            android:id="@+id/showReceiverLocationBtn"
-            android:layout_width="151dp"
-            android:layout_height="56dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="44dp"
-            android:layout_marginTop="40dp"
-            android:background="@drawable/book_btn"
-            android:drawableLeft="@drawable/ic_add_location_black_24dp"
-            android:drawablePadding="1dp"
-            android:drawableTint="@color/colorPrimary"
-            android:text="Location"
-            android:textAllCaps="false"
-            android:textColor="@color/colorWhite"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/senderLOcation"
-            app:layout_constraintTop_toBottomOf="@+id/uploadPackageImage" />
-
-        <Button
-            android:id="@+id/getDropingPointLocation"
-            android:layout_width="151dp"
-            android:layout_height="56dp"
+            android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/book_btn"
-            android:drawableLeft="@drawable/personicon"
-            android:drawablePadding="1dp"
-            android:drawableTint="@color/colorPrimary"
-            android:text="Receiver"
-            android:textAllCaps="false"
-            android:textColor="@color/colorWhite"
-            android:textSize="12sp"
-            android:textStyle="bold"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/droppingPointEditText"
-            app:layout_constraintTop_toBottomOf="@+id/showReceiverLocationBtn" />
-
-        <EditText
-            android:id="@+id/droppingPointEditText"
-            android:layout_width="184dp"
-            android:layout_height="46dp"
-            android:layout_marginStart="16dp"
-
-            android:layout_marginTop="15dp"
-            android:drawableLeft="@drawable/personicon"
-            android:drawablePadding="1dp"
-            android:drawableTint="@color/colorPrimary"
-            android:ems="10"
-            android:hint="Receiver"
-            android:inputType="textPersonName"
-            android:textAlignment="center"
-            android:textColor="@color/colorSemiWhite"
-            android:textColorHint="@color/colorPrimary"
-            android:textSize="16sp"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/senderLOcation" />
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
 
-        <EditText
-            android:id="@+id/senderLOcation"
-            android:layout_width="183dp"
-            android:layout_height="50dp"
-            android:layout_marginBottom="15dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="26dp"
+            <EditText
+                android:id="@+id/receiverNameEditText"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/add_clients26dp"
+                android:drawablePadding="1dp"
+                android:drawableTint="@color/colorPrimary"
+                android:ems="10"
+                android:hint="Receiver (FirstName , LastName)"
+                android:inputType="textPersonName"
+                android:textAlignment="center"
+                android:textColor="@color/colorWhite"
+                android:textColorHint="@color/colorSemiWhite"
+                android:textSize="16sp"
+                tools:layout_editor_absoluteY="267dp" />
 
-            android:drawableLeft="@drawable/ic_location_on_black_24dp"
-            android:drawablePadding="1dp"
-            android:drawableTint="@color/colorPrimary"
-            android:ems="10"
-            android:hint="Your Location"
-            android:inputType="textPersonName"
-            android:textAlignment="center"
-            android:textColor="@color/colorSemiWhite"
-            android:textColorHint="@color/colorPrimary"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toTopOf="@+id/droppingPointEditText"
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/packageImage" />
+            app:layout_constraintTop_toBottomOf="@+id/packageImage">
+
+            <EditText
+                android:id="@+id/senderLOcation"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/ic_location_on_black_24dp"
+                android:drawablePadding="1dp"
+                android:drawableTint="@color/colorPrimary"
+                android:ems="10"
+                android:hint="Your Location"
+                android:inputType="none"
+                android:textAlignment="center"
+                android:textColor="@color/colorSemiWhite"
+                android:textColorHint="@color/colorSemiWhite"
+                android:textSize="16sp"
+                tools:layout_editor_absoluteX="16dp"
+                tools:layout_editor_absoluteY="188dp" />
+
+            <Button
+                android:id="@+id/showReceiverLocationBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:layout_weight="1"
+                android:background="@drawable/book_btn"
+                android:drawableLeft="@drawable/ic_add_location_black_24dp"
+                android:drawablePadding="1dp"
+                android:drawableTint="@color/colorPrimary"
+                android:text="Location"
+                android:textAllCaps="false"
+                android:textColor="@color/colorWhite"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                tools:layout_editor_absoluteX="231dp"
+                tools:layout_editor_absoluteY="126dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout25"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="9dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout24">
+
+            <TextView
+                android:id="@+id/textView35"
+                android:paddingTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="+63"
+
+                android:textAlignment="center"
+                android:textColor="@android:color/background_light"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/receiverContactNumberEditText"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:layout_weight="1"
+
+                android:drawablePadding="1dp"
+                android:drawableTint="@color/colorPrimary"
+                android:ems="10"
+                android:hint="Receiver Contact Number"
+                android:inputType="phone"
+
+                android:textColor="@android:color/background_light"
+                android:textColorHint="@color/colorSemiWhite"
+                android:textSize="16sp"
+                tools:layout_editor_absoluteY="267dp" />
+
+        </LinearLayout>
 
         <ImageView
             android:id="@+id/packageImage"
-            android:layout_width="156dp"
-            android:layout_height="101dp"
-
-            android:layout_marginEnd="24dp"
-            android:layout_marginStart="36dp"
-            android:layout_marginTop="4dp"
+            android:layout_width="152dp"
+            android:layout_height="109dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
             android:background="@drawable/shape"
             android:src="@drawable/def_photo"
-            app:layout_constraintEnd_toStartOf="@+id/uploadPackageImage"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/uploadPackageImage"
-            android:layout_width="151dp"
-            android:layout_height="56dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/book_btn"
-            android:drawableLeft="@drawable/ic_file_upload_black_24dp"
-            android:drawablePadding="1dp"
-            android:drawableTint="@color/colorPrimary"
-            android:text="Upload"
-            android:textAllCaps="false"
-            android:textColor="@color/colorWhite"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/packageImage"
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/requestDescription"
-            android:layout_width="350dp"
-            android:layout_height="87dp"
-            android:layout_marginEnd="45dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="68dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="9dp"
             android:background="@color/colorContainer"
             android:drawableLeft="@drawable/ic_description_black_24dp"
             android:drawablePadding="1dp"
@@ -219,70 +211,145 @@
             android:ems="10"
             android:hint="Description"
             android:inputType="textMultiLine"
-            android:paddingLeft="20dp"
+            android:paddingBottom="25dp"
+            android:paddingLeft="10dp"
+            android:paddingTop="25dp"
+            android:singleLine="true"
+            android:textColor="@color/colorWhite"
             android:textColorHint="@color/colorPrimary"
-            android:textSize="14sp"
+            android:textSize="18sp"
             android:textStyle="italic"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/receiverContactNumberEditText" />
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout25" />
 
         <Button
             android:id="@+id/submitRequest"
-            android:layout_width="170dp"
-            android:layout_height="55dp"
-            android:layout_marginBottom="16dp"
-            android:layout_marginStart="120dp"
-            android:layout_marginTop="22dp"
+            android:layout_width="160dp"
+            android:layout_height="45dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="217dp"
+            android:layout_marginStart="216dp"
+            android:layout_marginTop="12dp"
             android:background="@drawable/signin_btn"
             android:drawableLeft="@drawable/ic_check_black_24dp"
             android:drawableTint="@color/colorWhite"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:text="Send Request"
             android:textAllCaps="false"
             android:textColor="@color/colorWhite"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/requestDescription"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintVertical_bias="0.489" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+
+            <EditText
+                android:id="@+id/droppingPointEditText"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/personicon"
+                android:drawablePadding="1dp"
+                android:drawableTint="@color/colorPrimary"
+                android:ems="10"
+                android:hint="Receiver"
+                android:inputType="none|textPersonName"
+                android:textAlignment="center"
+                android:textColor="@color/colorSemiWhite"
+                android:textColorHint="@color/colorSemiWhite"
+                android:textSize="16sp"
+                tools:layout_editor_absoluteX="8dp"
+                tools:layout_editor_absoluteY="281dp" />
+
+            <Button
+                android:id="@+id/getDropingPointLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/book_btn"
+                android:drawableLeft="@drawable/personicon"
+                android:drawablePadding="1dp"
+                android:drawableTint="@color/colorPrimary"
+                android:text="Receiver"
+                android:textAllCaps="false"
+                android:textColor="@color/colorWhite"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                tools:layout_editor_absoluteX="216dp"
+                tools:layout_editor_absoluteY="233dp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView32"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="9dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="56dp"
+            android:text="Weight :"
+            android:textColor="@android:color/background_light"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/chooseKgSpinner"
+            app:layout_constraintStart_toEndOf="@+id/packageImage"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Spinner
             android:id="@+id/chooseKgSpinner"
-            android:layout_width="259dp"
+            android:layout_width="112dp"
+            android:layout_height="28dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="56dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textView32"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@color/colorWhite"/>
+
+        <TextView
+            android:id="@+id/textView33"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginStart="24dp"
-            app:layout_constraintBottom_toTopOf="@+id/requestDescription"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:text="Service Fee :"
+            android:textColor="@android:color/background_light"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/packageImage"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/packageRateTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="1dp"
-            android:layout_marginStart="24dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="16dp"
             android:text="TextView"
-            app:layout_constraintBottom_toTopOf="@+id/chooseKgSpinner"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:textColor="@android:color/background_light"
+            android:textSize="16sp"
+            android:textStyle="italic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textView33"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-
-            android:id="@+id/textView21"
-            android:layout_width="81dp"
-            android:layout_height="43dp"
-            android:layout_marginEnd="91dp"
-            android:layout_marginStart="16dp"
-            android:text="+63"
-            android:textAlignment="center"
-            android:textColor="@color/colorAccent"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toStartOf="@+id/receiverContactNumberEditText"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:layout_editor_absoluteY="322dp" />
 
     </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>

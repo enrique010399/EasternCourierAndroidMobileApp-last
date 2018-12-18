@@ -122,6 +122,7 @@ public class admin_choose_courier extends AppCompatActivity implements Adapter_a
         databaseReference.child("requestAssignedCourierUserName").setValue(adminChooseCourierItem1.getCourierUserName().toString());
 
 
+
         //databaseReference.child("requestAssignedCourierId").equals("");
         //startActivity(intent);
 
@@ -130,11 +131,19 @@ public class admin_choose_courier extends AppCompatActivity implements Adapter_a
     public void sendMySms(){
         String phone;
         SmsManager sms=SmsManager.getDefault();
-        List<String> messages=sms.divideMessage("Your request Id is "+getIntent().getExtras().getString("Request id"));
+        List<String> messages=sms.divideMessage("This is the Eastern Courier's Admin ,,"+getIntent().getExtras().getString("Sender Name")+ "request is accepted with the following details: "+
+                "\n"+"Request Id: "+getIntent().getExtras().getString("Request Id")+
+                "\n"+"Sender Name: "+getIntent().getExtras().getString("Sender Name")+
+                "\n"+"Receiver Name: "+getIntent().getExtras().getString("Receiver Name")+
+                "\n"+"Courier Name: "+getIntent().getExtras().getString("Courier Name")+
+                "\n"+"Courier Contact Number: "+getIntent().getExtras().getString("Receiver Name")+
+                "\n"+"\n"+"Service Bill: "+getIntent().getExtras().getString("Request Bill")+"\n");
         for (String msg : messages){
+            String blah=getIntent().getExtras().getString("Receiver Number");
             PendingIntent sentIntent=PendingIntent.getBroadcast(admin_choose_courier.this,0,new Intent("SMS_SENT"),0);
             PendingIntent deliveredIntent=PendingIntent.getBroadcast(admin_choose_courier.this,0,new Intent("SMS_DELIVERED"),0);
-            sms.sendTextMessage(getIntent().getExtras().getString("Receiver Contact Number"),null,msg,sentIntent,deliveredIntent);
+            sms.sendTextMessage(blah,null,msg,sentIntent,deliveredIntent);
+            sms.sendTextMessage(getIntent().getExtras().getString("Sender Number"),null,msg,sentIntent,deliveredIntent);
         }
     }
 

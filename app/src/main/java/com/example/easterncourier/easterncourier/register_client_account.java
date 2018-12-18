@@ -22,6 +22,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -64,12 +66,15 @@ public class register_client_account extends AppCompatActivity {
         progressBar.setVisibility(View.GONE);
         mAuth = FirebaseAuth.getInstance();
 
+
+
         clientRegisterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 registerUser();
             }
         });
+
     }
 
 
@@ -148,46 +153,63 @@ public class register_client_account extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 progressBar.setVisibility(View.GONE);
-
+                //final String[] token = new String[1];
                 if (task.isSuccessful()){
                     sendEmailVerification();
-
-                    final registerClientRequest registerClientRequest=new registerClientRequest(
-                            mAuth.getCurrentUser().getUid(),
-                            firstName,
-                            lastName,
-                            gender,
-                            accountBirthDay.getText().toString(),
-                            accountBirthMonth.getText().toString(),
-                            accountBirthYear.getText().toString(),
-                            accountAddressStreet.getText().toString(),
-                            accountAddressBarangay.getText().toString(),
-                            accountAddressCity.getText().toString(),
-                            accountAddressProvince.getText().toString(),
-                            accountAddressZipCode.getText().toString(),
-                            accountPhoneNumber.getText().toString(),
-                            accountUserName.getText().toString(),
-                            accountPassword.getText().toString()
-
-                    );
-                    FirebaseDatabase.getInstance().getReference("Client Accounts")
-                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                            .setValue(registerClientRequest)
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    FirebaseInstanceId.getInstance().getInstanceId()
+                            .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
                                 @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    //progressBar.setVisibility(View.GONE);
-                                    if (task.isSuccessful()){
+                                public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                                    String token=task.getResult().getToken();
+
+                                    final registerClientRequest registerClientRequest=new registerClientRequest(
+                                            mAuth.getCurrentUser().getUid(),
+                                            firstName,
+                                            lastName,
+                                            gender,
+                                            accountBirthDay.getText().toString(),
+                                            accountBirthMonth.getText().toString(),
+                                            accountBirthYear.getText().toString(),
+                                            accountAddressStreet.getText().toString(),
+                                            accountAddressBarangay.getText().toString(),
+                                            accountAddressCity.getText().toString(),
+                                            accountAddressProvince.getText().toString(),
+                                            accountAddressZipCode.getText().toString(),
+                                            "0"+accountPhoneNumber.getText().toString(),
+                                            accountUserName.getText().toString(),
+                                            accountPassword.getText().toString(),token
+
+
+
+                                    );
+
+
+                                    FirebaseDatabase.getInstance().getReference("Client Accounts")
+                                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                            .setValue(registerClientRequest)
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    //progressBar.setVisibility(View.GONE);
+                                                    if (task.isSuccessful()){
                                         /*AlertDialog.Builder builder=new AlertDialog.Builder(register_client_account.this);
                                         builder.setMessage("Registered Successfully!!!")
                                                 .create().show();*/
 
-                                    }
-                                    else{
-                                        Toast.makeText(register_client_account.this,"SignUp Failed!!!",Toast.LENGTH_LONG);
-                                    }
+                                                    }
+                                                    else{
+                                                        Toast.makeText(register_client_account.this,"SignUp Failed!!!",Toast.LENGTH_LONG);
+                                                    }
+                                                }
+                                            });
+
                                 }
                             });
+
+
+
+
+
 
 
 

@@ -99,7 +99,7 @@ public class Book extends AppCompatActivity implements LocationListener {
 
 
 
-        mButtonChooseImage=findViewById(R.id.uploadPackageImage);
+        //mButtonChooseImage=findViewById(R.id.uploadPackageImage);
         mImageView=findViewById(R.id.packageImage);
         final EditText dropingPointLocation=findViewById(R.id.droppingPointEditText);
         final EditText receiverName=findViewById(R.id.receiverNameEditText);
@@ -194,7 +194,7 @@ public class Book extends AppCompatActivity implements LocationListener {
 
 
 
-        mButtonChooseImage.setOnClickListener(new View.OnClickListener() {
+        mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openFileChooser();
@@ -219,10 +219,11 @@ public class Book extends AppCompatActivity implements LocationListener {
                     Date date = new Date();
                     System.out.println(formatter.format(date));
                     String id=databaseClientRequest.push().getKey();
+                    id=id.substring(1,Math.min(id.length(),10));
                     admin_request_item adminRequestItem=new admin_request_item(id,tvLati,tvLongi,droppingPointLatitude,droppingPointLongitude,receiverName.getText().toString(),packageDescription.getText().toString(),getIntent().getExtras().getString("username"),
-                            getIntent().getExtras().getString("clientFullName"), formatter.format(date)+"",mImageUri+"","Not Assign","Not Assign","Not Assign","Not Yet",receiverContactNumber.getText().toString(),packageRateTv.getText().toString(),"0","0");
+                            getIntent().getExtras().getString("clientFullName"), formatter.format(date)+"",mImageUri+"","Not Assign","Not Assign","Not Assign","Not Yet","0"+receiverContactNumber.getText().toString(),packageRateTv.getText().toString(),"0","0","Not Yet"
+                    ,getIntent().getExtras().getString("accountPhoneNUmber"),"Not Set","No");
                     databaseClientRequest.child(id).setValue(adminRequestItem);
-
                     Toast.makeText(Book.this,"Request Sent",Toast.LENGTH_LONG).show();
                     Intent intent=new Intent(Book.this,homeDashBoard.class);
                     intent.putExtra("clientFullName",getIntent().getExtras().getString("clientFullName"));
@@ -362,10 +363,6 @@ public class Book extends AppCompatActivity implements LocationListener {
 
         TextView senderLocation=findViewById(R.id.senderLOcation);
 
-        //tvLongi = String.valueOf(location.getLongitude());
-        //tvLati = String.valueOf(location.getLatitude());
-
-        //senderLocation.setText(tvLongi+" "+tvLati);
 
     }
 

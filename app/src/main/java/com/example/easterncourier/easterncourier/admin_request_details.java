@@ -81,6 +81,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -93,7 +94,7 @@ import butterknife.ButterKnife;
 
 public class admin_request_details extends AppCompatActivity implements courier_enter_requestid_dialog.ExampleDialogListener,courier_enter_payment_dialog.ExampleDialogListener,admin_enter_bill_dialog.ExampleDialogListener {
     TextView requestIdTv, senderNameTv, receiverNameTv, dateRequestedTv, packageDescriptiontv;
-    Button viewPackageImageBtn, viewSenderLocationBtn, viewreceiverLocationBtn, assignCourierBtn, onTheWayBtn, finishDeliveryBtn, payBtn,enterBillBtn,declineBtn,showMyLocationBtn,showCourierLocationBtn;
+    Button viewPackageImageBtn, viewSenderLocationBtn, viewreceiverLocationBtn, assignCourierBtn, onTheWayBtn, finishDeliveryBtn, payBtn,enterBillBtn,declineBtn,showMyLocationBtn,showCourierLocationBtn,transactionBtn;
     String fromCourier;
     public static String tvLongi;
     public static String tvLati;
@@ -136,12 +137,13 @@ public class admin_request_details extends AppCompatActivity implements courier_
     private CountryCodePicker ccp;
     private static final int REQUEST_SMS=0;
     private BroadcastReceiver sentStatusReceiver,deliveredStatusReceiver;
-    public  int bill=0, change,cash;
-    //public double bill=0;
+    public  double  change,cash;
+    public double bill=0;
 
     private File pdfFile;
     final private int REQUEST_CODE_ASK_PERMISSIONS = 111;
 
+    String senderNumber,receiverNumber;
     ArrayList<admin_request_item> list ;
     DatabaseReference reference;
     @Override
@@ -149,7 +151,8 @@ public class admin_request_details extends AppCompatActivity implements courier_
         super.onCreate(savedInstanceState);
         setContentView(R.layout.admin_request_details);
         //CheckPermission();
-
+        senderNumber=getIntent().getExtras().getString("Sender Number");
+        receiverNumber=getIntent().getExtras().getString("Receiver Number");
 
         reference=FirebaseDatabase.getInstance().getReference().child("Client Request");
         requestIdTv = findViewById(R.id.requestIdTv);
@@ -158,57 +161,99 @@ public class admin_request_details extends AppCompatActivity implements courier_
         dateRequestedTv = findViewById(R.id.dateRequestedTv);
         packageDescriptiontv = findViewById(R.id.packageDescTv);
 
-
-        viewPackageImageBtn = findViewById(R.id.nshowPackageImageBtn);
+        transactionBtn=findViewById(R.id.transactiondetailsBtn);
+        //viewPackageImageBtn = findViewById(R.id.showPackageImageBtn);
+        //viewPackageImageBtn.setVisibility(View.INVISIBLE);
         viewSenderLocationBtn = findViewById(R.id.showSenderLocationBtn);
         viewreceiverLocationBtn = findViewById(R.id.showReceiverLocationBtn);
         assignCourierBtn = findViewById(R.id.assignCourierBtn);
         onTheWayBtn = findViewById(R.id.onTheWayBtn);
         finishDeliveryBtn = findViewById(R.id.finishDeliveryBtn);
-        payBtn=findViewById(R.id.payBtn);
-        enterBillBtn=findViewById(R.id.enterBillForTheRequestBtn);
+        //payBtn=findViewById(R.id.transactiondetailsBtn);
+        //enterBillBtn=findViewById(R.id.enterBillForTheRequestBtn);
         declineBtn=findViewById(R.id.declineRequestBtn);
-        showMyLocationBtn=findViewById(R.id.showMyLocationBtn);
+        //showMyLocationBtn=findViewById(R.id.showMyLocationBtn);
         showCourierLocationBtn=findViewById(R.id.showCourierLocationBtn);
+
 
 
         Button stopLocationBtn=findViewById(R.id.stopBtn);
 
 
-        bill=Integer.parseInt(getIntent().getExtras().getString("Request Bill").toString());
-        //bill=Double.parseDouble(getIntent().getExtras().getString("Request Bill"));
-        change=Integer.parseInt(getIntent().getExtras().getString("Request Change"));
-        cash=Integer.parseInt(getIntent().getExtras().getString("Request Cash"));
+        //bill=Integer.parseInt(getIntent().getExtras().getString("Request Bill").toString());
+        bill=Double.parseDouble(getIntent().getExtras().getString("Request Bill"));
+        change=Double.parseDouble(getIntent().getExtras().getString("Request Change"));
+        cash=Double.parseDouble(getIntent().getExtras().getString("Request Cash"));
+
+
 
         String ifCourier = getIntent().getExtras().getString("ifCourier");
+
+        if (ifCourier.equals("Transaction")){
+
+        }
+
         if (ifCourier.equals("Courier")) {
 
+            requestIdTv.setVisibility(View.INVISIBLE);
             assignCourierBtn.setVisibility(View.INVISIBLE);
-            enterBillBtn.setVisibility(View.INVISIBLE);
+            //enterBillBtn.setVisibility(View.INVISIBLE);
             declineBtn.setVisibility(View.INVISIBLE);
             assignCourierBtn.setVisibility(View.INVISIBLE);
+            transactionBtn.setVisibility(View.INVISIBLE);
 
             if (cash==0){
-                payBtn.setVisibility(View.VISIBLE);
+                transactionBtn.setVisibility(View.VISIBLE);
             }
             else{
-                payBtn.setVisibility(View.INVISIBLE);
+                transactionBtn.setVisibility(View.INVISIBLE);
             }
 
         } else if (ifCourier.equals("Admin")) {
 
-            showMyLocationBtn.setVisibility(View.INVISIBLE);
+            //showMyLocationBtn.setVisibility(View.INVISIBLE);
             assignCourierBtn.setVisibility(View.VISIBLE);
             onTheWayBtn.setVisibility(View.INVISIBLE);
             finishDeliveryBtn.setVisibility(View.INVISIBLE);
             stopLocationBtn.setVisibility(View.INVISIBLE);
-            payBtn.setVisibility(View.INVISIBLE);
+            //payBtn.setVisibility(View.INVISIBLE);
+        }
+
+        else  if(ifCourier.equals("Transaction")){
+            //requestIdTv.setVisibility(View.INVISIBLE);
+            assignCourierBtn.setVisibility(View.INVISIBLE);
+            //enterBillBtn.setVisibility(View.INVISIBLE);
+            declineBtn.setVisibility(View.INVISIBLE);
+            assignCourierBtn.setVisibility(View.INVISIBLE);
+
+            onTheWayBtn.setVisibility(View.INVISIBLE);
+            finishDeliveryBtn.setVisibility(View.INVISIBLE);
+            stopLocationBtn.setVisibility(View.INVISIBLE);
+            //viewPackageImageBtn.setVisibility(View.INVISIBLE);
+            viewreceiverLocationBtn.setVisibility(View.INVISIBLE);
+            viewSenderLocationBtn.setVisibility(View.INVISIBLE);
+            showCourierLocationBtn.setVisibility(View.INVISIBLE);
+            transactionBtn.setVisibility(View.VISIBLE);
 
         }
         else {
+
             Toast.makeText(this, "Unknown account type", Toast.LENGTH_LONG);
         }
 
+
+
+        transactionBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(admin_request_details.this,admin_req_details_nextpage.class);
+                intent.putExtra("courierName",getIntent().getExtras().getString("courierName"));
+                intent.putExtra("courierBill",getIntent().getExtras().getString("Request Bill"));
+                intent.putExtra("courierCash",getIntent().getExtras().getString("Request Cash"));
+                intent.putExtra("courierChange",getIntent().getExtras().getString("Request Change"));
+                startActivity(intent);
+            }
+        });
 
 
         ButterKnife.bind(this);
@@ -219,16 +264,17 @@ public class admin_request_details extends AppCompatActivity implements courier_
         // restore the values from saved instance state
         restoreValuesFromBundle(savedInstanceState);
 
-
-
-        requestIdTv.setText(getIntent().getExtras().getString("Request Id"));
+        //trim Request Id
+        String trimRequestId=getIntent().getExtras().getString("Request Id");
+        //trimRequestId=trimRequestId.substring(1,Math.min(trimRequestId.length(),7));
+        requestIdTv.setText(trimRequestId);
         senderNameTv.setText(getIntent().getExtras().getString("Sender Name"));
         receiverNameTv.setText(getIntent().getExtras().getString("Receiver Name"));
         dateRequestedTv.setText(getIntent().getExtras().getString("Date Requested"));
         packageDescriptiontv.setText(getIntent().getExtras().getString("Package Description"));
 
 
-        showMyLocationBtn.setOnClickListener(new View.OnClickListener() {
+        /*showMyLocationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(admin_request_details.this,courierShowMyLocationSample.class);
@@ -236,12 +282,22 @@ public class admin_request_details extends AppCompatActivity implements courier_
                 intent.putExtra("Sender Longitude",getIntent().getExtras().getString("Sender Longitude"));
                 startActivity(intent);
             }
+        });*/
+        declineBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Client Request").child(requestIdTv.getText().toString());
+                databaseReference.child("requestDecline").setValue("Yes");
+                Toast.makeText(admin_request_details.this, "This request is declined", Toast.LENGTH_SHORT).show();
+                Intent intent=new Intent(admin_request_details.this,Admin_dashboard.class);
+
+            }
         });
 
         finishDeliveryBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                requestIdTv.setVisibility(View.INVISIBLE);
+                //requestIdTv.setVisibility(View.INVISIBLE);
                 courier_enter_requestid_dialog courier_enter_requestid_dialog1 = new courier_enter_requestid_dialog();
                 //courier_enter_requestid_dialog1.trueRequestId=requestIdTv.getText().toString();
                 courier_enter_requestid_dialog1.show(getSupportFragmentManager(), "Request Id");
@@ -301,28 +357,36 @@ public class admin_request_details extends AppCompatActivity implements courier_
             }
         });
 
-        payBtn.setOnClickListener(new View.OnClickListener() {
+        /*payBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent=new Intent(admin_request_details.this,admin_req_details_nextpage.class);
+                intent.putExtra("courierName",getIntent().getExtras().getString("courierName"));
+                intent.putExtra("courierBill",getIntent().getExtras().getString("Request Bill"));
+                intent.putExtra("courierCash",getIntent().getExtras().getString("Request Cash"));
+                intent.putExtra("courierChange",getIntent().getExtras().getString("Request Change"));
 
+                startActivity(intent);
             }
-        });
+        });*/
 
-        enterBillBtn.setOnClickListener(new View.OnClickListener() {
+        /*enterBillBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 admin_enter_bill_dialog admin_enter_bill_dialog1=new admin_enter_bill_dialog();
                 admin_enter_bill_dialog1.show(getSupportFragmentManager(),"Bill");
             }
-        });
+        });*/
 
         showCourierLocationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(admin_request_details.this,courierLocation.class);
                 intent.putExtra("Courier Id",getIntent().getExtras().getString("Courier Id"));
+                intent.putExtra("Courier UserName",getIntent().getExtras().getString("Courier UserName"));
                 intent.putExtra("Sender Latitude",getIntent().getExtras().getString("Sender Latitude"));
                 intent.putExtra("Sender Longitude",getIntent().getExtras().getString("Sender Longitude"));
+                intent.putExtra("requestForFinished","No");
                 startActivity(intent);
             }
         });
@@ -332,8 +396,18 @@ public class admin_request_details extends AppCompatActivity implements courier_
 
     private void checkBill(){
         Intent intent = new Intent(admin_request_details.this, com.example.easterncourier.easterncourier.admin_choose_courier.class);
-        intent.putExtra("Request Id", requestIdTv.getText());
-        intent.putExtra("Receiver Contact Number",getIntent().getExtras().getString("Receiver Contact Number"));
+        intent.putExtra("Request Id", getIntent().getExtras().getString("Request Id"));
+        intent.putExtra("Sender Name",getIntent().getExtras().getString("Sender Name"));
+        intent.putExtra("Receiver Name",getIntent().getExtras().getString("Receiver Name"));
+        intent.putExtra("Courier Name",getIntent().getExtras().getString("Courier Name"));
+        //intent.putExtra("Courier Number",getIntent().getExtras().getString("Courier Number"));
+
+        intent.putExtra("Request Bill",getIntent().getExtras().getString("Request Bill"));
+        intent.putExtra("Sender Number",senderNumber);
+        intent.putExtra("Receiver Number",receiverNumber);
+
+        Toast.makeText(this, senderNumber+receiverNumber, Toast.LENGTH_SHORT).show();
+
         startActivity(intent);
         /*list = new ArrayList<admin_request_item>();
         final Integer[] bill1 = {0};
@@ -653,6 +727,8 @@ public class admin_request_details extends AppCompatActivity implements courier_
                 sendMySms();
             }
 
+
+
             AlertDialog.Builder builder = new AlertDialog.Builder(admin_request_details.this);
             builder.setMessage("The request Id is correct")
                     .create().show();
@@ -670,12 +746,15 @@ public class admin_request_details extends AppCompatActivity implements courier_
 
     public void sendMySms(){
         String phone;
+
         SmsManager sms=SmsManager.getDefault();
-        List<String> messages=sms.divideMessage("Your Package was delivered");
+        String receiverName=getIntent().getExtras().getString("Receiver Name");
+        String courierName=getIntent().getExtras().getString("Courier Name");
+        List<String> messages=sms.divideMessage("This is "+courierName+" from Eeastern Couriers"+"\n"+"Your Package for "+ receiverName+" just delivered"+"\n"+"Thank You...");
         for (String msg : messages){
             PendingIntent sentIntent=PendingIntent.getBroadcast(admin_request_details.this,0,new Intent("SMS_SENT"),0);
             PendingIntent deliveredIntent=PendingIntent.getBroadcast(admin_request_details.this,0,new Intent("SMS_DELIVERED"),0);
-            sms.sendTextMessage(getIntent().getExtras().getString("Receiver Number"),null,msg,sentIntent,deliveredIntent);
+            sms.sendTextMessage(getIntent().getExtras().getString("Sender Number"),null,msg,sentIntent,deliveredIntent);
         }
     }
 
@@ -755,8 +834,8 @@ public class admin_request_details extends AppCompatActivity implements courier_
 
 
     @Override
-    public void processPayment(final Integer cash) {
-        final Integer change;
+    public void processPayment(final Double cash) {
+        final Double change;
         //bill=Integer.parseInt(getIntent().getExtras().getString("Request Bill"));
 
         //getIntent().getExtras().getString("Request Cash");
@@ -769,6 +848,12 @@ public class admin_request_details extends AppCompatActivity implements courier_
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                        //Transaction Date
+                        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                        Date date = new Date();
+                        System.out.println(formatter.format(date));
+
+                        databaseReference1.child("requestTransactionDate").setValue(formatter.format(date));
                         databaseReference1.child("requestFinish").setValue("Finished");
                     }
                 }
@@ -856,6 +941,11 @@ public class admin_request_details extends AppCompatActivity implements courier_
         OutputStream output = new FileOutputStream(pdfFile);
         com.itextpdf.text.Document document=new com.itextpdf.text.Document();
         PdfWriter.getInstance(document, output);
+        //Receipt Issued Date
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Date date = new Date();
+        System.out.println(formatter.format(date));
+
         document.open();
         document.add(new Paragraph("Request Date: "+getIntent().getExtras().getString("Client Date Requested")
         +"\n"+"Sender: "+getIntent().getExtras().getString("Sender Name")
@@ -863,7 +953,10 @@ public class admin_request_details extends AppCompatActivity implements courier_
         +"\n"+"Delivered By: "+getIntent().getExtras().getString("Courier Name")
         +"\n"+"Package Description: "+getIntent().getExtras().getString("Package Description")
         +"\n"+"Package Weight: "+"10kg"
-        +"\n"+"Service Fee: "+getIntent().getExtras().getString("Request Bill")));
+        +"\n"+"Service Fee: "+getIntent().getExtras().getString("Request Bill")
+        +"\n"+"Receipt Issued Date: "+formatter.format(date)));
+
+
 
         document.close();
         previewPdf();

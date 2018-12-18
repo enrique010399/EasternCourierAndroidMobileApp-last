@@ -6,86 +6,63 @@
     android:layout_height="match_parent"
     tools:context=".transaction_history">
 
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/constraintLayout"
+    <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        app:layout_constraintBottom_toTopOf="@+id/searchNameEt"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal"
+        android:padding="3dp"
+        app:layout_constraintBottom_toTopOf="@+id/cardView3"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <View
-            android:id="@+id/view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/button4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Button"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <ImageView
+            android:id="@+id/backbutton"
+            android:layout_width="52dp"
+            android:layout_height="48dp"
+            android:src="@drawable/arrow" />
 
         <TextView
-            android:id="@+id/textView14"
-            android:layout_width="wrap_content"
-            android:layout_height="22dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="12dp"
-            android:text="TextView"
-            app:layout_constraintStart_toEndOf="@+id/button4"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:paddingTop="5dp"
+            android:text="Transaction History"
+            android:textColor="@color/colorWhite"
+            android:textSize="25sp"
+            android:textStyle="bold" />
 
 
-    </android.support.constraint.ConstraintLayout>
+    </LinearLayout>
 
     <EditText
         android:id="@+id/searchNameEt"
-        android:layout_width="171dp"
+        android:layout_width="330dp"
         android:layout_height="0dp"
+        android:layout_marginEnd="96dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="Search"
         android:inputType="textPersonName"
         android:textColor="@color/cardview_light_background"
         android:textColorHint="@color/colorWhite"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
-
-    <Spinner
-        android:id="@+id/accountTypeSpinner"
-        android:layout_width="126dp"
-        android:layout_height="43dp"
-        android:layout_marginEnd="11dp"
-        android:layout_marginStart="6dp"
-        android:entries="@array/accountType"
-        app:layout_constraintEnd_toStartOf="@+id/dateSpinner"
-        app:layout_constraintStart_toEndOf="@+id/searchNameEt"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
-
-    <Spinner
-        android:id="@+id/dateSpinner"
-        android:layout_width="97dp"
-        android:layout_height="44dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/accountTypeSpinner"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_transactionHistory"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/accountTypeSpinner" />
+        app:layout_constraintTop_toBottomOf="@+id/searchNameEt" />
 
 
 </android.support.constraint.ConstraintLayout>

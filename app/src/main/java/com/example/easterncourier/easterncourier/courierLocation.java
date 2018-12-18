@@ -87,12 +87,13 @@ public class courierLocation extends FragmentActivity implements OnMapReadyCallb
     DatabaseReference ref;
     GeofencingRequest geoRequest;
     GoogleApiClient client;
-    private NotificationManagerCompat notificationManager;
 
+
+    public static NotificationManagerCompat notificationManager;
     private static final String TAG = "courierLocation";
 
 
-
+    String ETA;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,8 +116,6 @@ public class courierLocation extends FragmentActivity implements OnMapReadyCallb
         Double clientLatitude = Double.parseDouble(getIntent().getExtras().getString("Sender Latitude"));
         Double clientLongitude = Double.parseDouble(getIntent().getExtras().getString("Sender Longitude"));
         final LatLng clientLocation = new LatLng(clientLatitude, clientLongitude);
-
-
         //mMap.setMapType(mMap.MAP_TYPE_SATELLITE);
 
 
@@ -174,12 +173,12 @@ public class courierLocation extends FragmentActivity implements OnMapReadyCallb
                 clientLocationLoc.setLongitude(clientLocation.longitude);
 
                 //calculating distance between courier and eta
-                double distance=(courierLocationLoc.distanceTo(clientLocationLoc))* 0.000621371;
-                double finalDistance1=distance*1.609;
+                double distance=(courierLocationLoc.distanceTo(clientLocationLoc))* 0.001;
+                //double finalDistance1=distance*1.609;
                 NumberFormat format=new DecimalFormat("#0.0");
-                String distanceFormatted=format.format(finalDistance1);
-                double finalDistance=Double.parseDouble(distanceFormatted);
-                double estimatedTimeArrivalInMinutes=finalDistance/10*30;
+                String distanceFormatted=format.format(distance);
+                final double finalDistance=Double.parseDouble(distanceFormatted);
+                final double estimatedTimeArrivalInMinutes=finalDistance/10*30;
 
 
                 Double clientLatitude = Double.parseDouble(getIntent().getExtras().getString("Sender Latitude"));
@@ -188,9 +187,61 @@ public class courierLocation extends FragmentActivity implements OnMapReadyCallb
                 mMap.addMarker(new MarkerOptions().position(clientLocation).title("Your Requested Location"));
                 mMap.addCircle(new CircleOptions().center(clientLocation).radius(25.0).strokeWidth(3f).strokeColor(Color.CYAN).fillColor(Color.argb(70,0,255,255)));
 
+
+
+                ref= FirebaseDatabase.getInstance().getReference().child("Client Request");
+
+
+                //.child("requestAssignedCourierUserName").child(getIntent().getExtras().getString("Courier UserName"));
+                ref.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                        //admin_request_item admin_request_item2=new admin_request_item();
+                        for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
+
+                            //Toast.makeText(courier_client_request.this,admin_request_item2.getRequestId(),Toast.LENGTH_LONG);
+                            if (dataSnapshot1.getValue(admin_request_item.class).getRequestAssignedCourierUserName().equals(getIntent().getExtras().getString("Courier UserName"))){
+                                admin_request_item admin_request_item1= dataSnapshot1.getValue(admin_request_item.class);
+                                String requestId;
+                                requestId=dataSnapshot1.getValue(admin_request_item.class).getRequestId().toString();
+
+
+
+                                if (getIntent().getExtras().getString("requestForFinished").equals("No")){
+                                    //firebaseMessagingNotificationHelper.displayNotification(getApplicationContext(),"Eastern Couriers","There is a new Assigned Client Request For You,,,");
+                                    //if (distance(clientLocation.latitude,clientLocation.longitude,location.latitude,location.longitude)<0.0155343){
+
+                                    if (!admin_request_item1.getRequestFinish().equals("Finished")){
+                                        ETA="Distance between these two location is : "+finalDistance +" kilometers "+"ETA= "+estimatedTimeArrivalInMinutes+" minutes/seconds";
+                                        //ref.child("requestFinish").setValue("Finished");
+                                        ref.child(requestId).child("requestETA").setValue(ETA);
+                                    }
+
+
+                                }
+                                else if (getIntent().getExtras().getString("requestForFinished").equals("Yes")){
+                                    if (!admin_request_item1.getRequestFinish().equals("Not Yet")){
+                                        list.add(admin_request_item1);
+                                    }
+                                }
+
+                            }
+
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
                 AlertDialog alertDialog = new AlertDialog.Builder(courierLocation.this).create();
                 alertDialog.setTitle("Info");
-                alertDialog.setMessage("Distance between these two location is : "+finalDistance +" kilometers "+"ETA= "+estimatedTimeArrivalInMinutes);
+                alertDialog.setMessage("Distance between these two location is : "+finalDistance +" kilometers "+"ETA= "+estimatedTimeArrivalInMinutes+" minutes/seconds");
                 alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
@@ -263,7 +314,6 @@ public class courierLocation extends FragmentActivity implements OnMapReadyCallb
     }
 
     private class FetchUrl extends AsyncTask<String, Void, String> {
-
         @Override
         protected String doInBackground(String... url) {
             String data = "";
@@ -281,8 +331,8 @@ public class courierLocation extends FragmentActivity implements OnMapReadyCallb
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
 
-            ParserTask parserTask = new ParserTask();
-            parserTask.execute(result);
+            /*ParserTask parserTask = new ParserTask();
+            parserTask.execute(result);*/
 
         }
     }
@@ -314,7 +364,7 @@ public class courierLocation extends FragmentActivity implements OnMapReadyCallb
         return data;
     }
 
-    private class ParserTask extends AsyncTask<String, Integer, List<List<HashMap<String, String>>>> {
+    /*private class ParserTask extends AsyncTask<String, Integer, List<List<HashMap<String, String>>>> {
         @Override
         protected List<List<HashMap<String, String>>> doInBackground(String... jsonData) {
 
@@ -364,7 +414,7 @@ public class courierLocation extends FragmentActivity implements OnMapReadyCallb
                 Log.d("onPostExecute","without Polylines drawn");
             }
         }
-    }
+    }*/
 
 
     private double distance(double lat1, double lng1, double lat2, double lng2) {

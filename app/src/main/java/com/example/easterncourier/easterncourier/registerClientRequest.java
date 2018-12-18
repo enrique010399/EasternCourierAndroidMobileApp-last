@@ -13,7 +13,7 @@ public class registerClientRequest  {
             ,accountBirthDay,accountBirthMonth,accountBirthYear
             ,accountAddressStreet,accountAddressBarangay,accountAddressCity
             ,accountAddressProvince,accountAddressZipCode,accountMobileNumber
-            ,accountUserName,accountPassword;
+            ,accountUserName,accountPassword,accountToken;
 
 
 
@@ -22,7 +22,7 @@ public class registerClientRequest  {
 
     }
 
-    public registerClientRequest(String accountId, String accountFirstName, String accountLastName, String accountGender, String accountBirthDay, String accountBirthMonth, String accountBirthYear, String accountAddressStreet, String accountAddressBarangay, String accountAddressCity, String accountAddressProvince, String accountAddressZipCode, String accountMobileNumber, String accountUserName, String accountPassword) {
+    public registerClientRequest(String accountId, String accountFirstName, String accountLastName, String accountGender, String accountBirthDay, String accountBirthMonth, String accountBirthYear, String accountAddressStreet, String accountAddressBarangay, String accountAddressCity, String accountAddressProvince, String accountAddressZipCode, String accountMobileNumber, String accountUserName, String accountPassword, String accountToken) {
         this.accountId = accountId;
         this.accountFirstName = accountFirstName;
         this.accountLastName = accountLastName;
@@ -38,6 +38,7 @@ public class registerClientRequest  {
         this.accountMobileNumber = accountMobileNumber;
         this.accountUserName = accountUserName;
         this.accountPassword = accountPassword;
+        this.accountToken = accountToken;
     }
 
     public String getAccountId() {
@@ -158,5 +159,13 @@ public class registerClientRequest  {
 
     public void setAccountPassword(String accountPassword) {
         this.accountPassword = accountPassword;
+    }
+
+    public String getAccountToken() {
+        return accountToken;
+    }
+
+    public void setAccountToken(String accountToken) {
+        this.accountToken = accountToken;
     }
 }

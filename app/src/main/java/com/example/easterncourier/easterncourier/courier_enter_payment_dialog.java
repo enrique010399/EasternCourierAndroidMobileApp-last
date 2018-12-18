@@ -40,7 +40,7 @@ public class courier_enter_payment_dialog extends AppCompatDialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String cash=cashEt.getText().toString();
-                        listener.processPayment(Integer.parseInt(cash));
+                        listener.processPayment(Double.parseDouble(cash));
 
                     }
                 });
@@ -59,6 +59,6 @@ public class courier_enter_payment_dialog extends AppCompatDialogFragment {
         }
     }
     public interface ExampleDialogListener{
-        void processPayment(Integer cash);
+        void processPayment(Double cash);
     }
 }

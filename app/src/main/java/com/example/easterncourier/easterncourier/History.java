@@ -93,7 +93,7 @@ public class History extends AppCompatActivity implements Adapter_courier_client
         intent.putExtra("Sender Latitude",admin_request_item1.getSenderLocationLatitude());
         intent.putExtra("Sender Longitude",admin_request_item1.getSenderLocationLongitude());
         intent.putExtra("Courier Id",admin_request_item1.getRequestAssignedCourierId());
-        intent.putExtra("ifCourier","Courier");
+        intent.putExtra("ifCourier","Transaction");
         intent.putExtra("Receiver Number",admin_request_item1.getReceiverContactNumber());
         intent.putExtra("Request Bill",admin_request_item1.getRequestBill());
         intent.putExtra("Request Cash",admin_request_item1.getRequestCash());
